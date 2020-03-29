@@ -64,12 +64,7 @@ export default {
   computed: {
     _to () {
       console.log('end date: ' + this.endDate)
-      var effectiveEndDate = this.endDate
-      if (!this.endDate) {
-        effectiveEndDate = new Date()
-        effectiveEndDate.setDate(effectiveEndDate.getDate() - 1);
-      }
-      return dateToDay(effectiveEndDate)
+      return this.endDate ? dateToDay(this.endDate) : dateToDay(new Date())
     },
     _from () {
       console.log('start date: ' + this.startDate)
