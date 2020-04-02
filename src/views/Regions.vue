@@ -7,14 +7,14 @@
         <h3>Daily</h3>
         <line-chart
           v-if="loaded"
-          :chart-data="dailyChartData[country]"
+          :chartdata="dailyChartData[country]"
           :options="options"/>
         </div>
         <div class="chart">
         <h3>Cumulative</h3>
         <line-chart
           v-if="loaded"
-          :chart-data="chartData[country]"
+          :chartdata="chartData[country]"
           :options="options"/>
         </div>
       </div>
@@ -24,7 +24,7 @@
 
 <script>
 //import { mapGetters } from 'vuex'
-import LineChart from "./Chart.js";
+import LineChart from './Chart.js'
 
 import { loadData, confirmed, deaths, groupByCountry, toDaily } from '../utils/dataLoader'
 import { dateToDay, dateBeautify } from '../utils/dateFormatter'
@@ -88,7 +88,7 @@ export default {
         this.dates = stats[this.locations[0]].map(entry => entry.date)
         //console.log('dates: ' + JSON.stringify(this.dates))
         this.countries.forEach(country => {
-          // console.log('processing country: ' + country);
+          console.log('processing country: ' + country);
           this.byCountry = groupByCountry(stats);
           this.confirmed = confirmed(this.byCountry, country);
           this.deaths = deaths(this.byCountry, country);
@@ -133,7 +133,7 @@ export default {
             ]
           }
         })
-        // console.log('chart data: ' + JSON.stringify(this.dailyChartData))
+        console.log('chart data: ' + JSON.stringify(this.dailyChartData))
         this.loaded = true
     } catch (e) {
       console.error(e)

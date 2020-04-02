@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <chart v-bind:countries="['Italy', 'Spain', 'Germany']" v-bind:startDate="from"/>
+    <chart v-bind:countries="['Italy', 'Spain', 'Germany', 'France', 'United Kingdom']" v-bind:startDate="from"/>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import Chart from "@/components/ChartContainer.vue";
 export default {
   name: "home",
   data: () => ({
-    from: new Date(2020,1,20)
+    from: new Date(2020,2,29),
   }),
   components: {
     Chart

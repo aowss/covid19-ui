@@ -2,7 +2,11 @@
   <div id="app">
     <j-header></j-header>
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/">World</router-link> |
+      <router-link to="/continent">Continents</router-link> |
+      <router-link to="/country">Countries</router-link> |
+      <router-link to="/region">Regions</router-link> |
+      <router-link to="/analysis">Analysis</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view />
