@@ -11,12 +11,10 @@
       <h3>Data for {{ country }}</h3>
       <div v-for="region in Object.keys(selectedCountryStats)" :key="region">
         <div class="chart">
-          <h3>Daily data for {{ region }}</h3>
-          <line-chart :chart-data="dailyChartData[region]" :options="options" />
+          <line-chart :chart-data="dailyChartData[region]" :options="options" :title="'Daily data for ' + region.substring(region.indexOf(' / ') + 3)"/>
         </div>
         <div class="chart">
-          <h3>Cumulative data for {{ region }}</h3>
-          <line-chart :chart-data="chartData[region]" :options="options" />
+          <line-chart :chart-data="chartData[region]" :options="options" :title="'Cumulative data for ' + region.substring(region.indexOf(' / ') + 3)"/>
         </div>
       </div>
     </div>

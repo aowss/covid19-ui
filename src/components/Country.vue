@@ -9,12 +9,10 @@
     <br />
     <div v-if="country != ''">
       <div class="chart">
-        <h3>Daily data for {{ country }}</h3>
-        <line-chart :chart-data="dailyChartData" :options="options" />
+        <line-chart :chart-data="dailyChartData" :options="options" :title="'Daily data for ' + country"/>
       </div>
       <div class="chart">
-        <h3>Cumulative data for {{ country }}</h3>
-        <line-chart :chart-data="chartData" :options="options" />
+        <line-chart :chart-data="chartData" :options="options" :title="'Cumulative data for ' + country"/>
       </div>
     </div>
   </div>
