@@ -1,5 +1,24 @@
 import { toDaily } from "./dataLoader";
 
+export const cumulativeDataPerDay = (stats, property) => {
+  const locations = Object.keys(stats);
+  const dates = stats[locations[0]].map(entry => entry.date);
+  return dates.reduce((data, date) => {
+    data[date] = {
+      labels: locations,
+      datasets: [
+        {
+          data: locations
+            .flatMap(location => stats[location])
+            .filter(stat => stat.date === date)
+            .map(stat => stat.value[property])
+        }
+      ]
+    };
+    return data;
+  }, {});
+};
+
 export const cumulativeData = stats =>
   Object.keys(stats).reduce((data, location) => {
     data[location] = cumulativeLocationData(stats[location]);

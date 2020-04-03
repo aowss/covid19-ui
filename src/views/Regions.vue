@@ -8,13 +8,18 @@
     </select>
     <br />
     <div v-if="country != ''">
-      <h3>Data for {{ country }}</h3>
+      <div class="chart">
+        <pie-chart :chart-data="latestDeathsDataPerDay" :title="'Deaths'"/>
+      </div>
+      <div class="chart">
+        <pie-chart :chart-data="latestConfirmedDataPerDay" :title="'Confirmed Cases'"/>
+      </div>
       <div v-for="region in Object.keys(selectedCountryStats)" :key="region">
         <div class="chart">
-          <line-chart :chart-data="dailyChartData[region]" :options="options" :title="'Daily data for ' + region.substring(region.indexOf(' / ') + 3)"/>
+          <bar-chart :chart-data="dailyChartData[region]" :title="'Daily data for ' + region.substring(region.indexOf(' / ') + 3)"/>
         </div>
         <div class="chart">
-          <line-chart :chart-data="chartData[region]" :options="options" :title="'Cumulative data for ' + region.substring(region.indexOf(' / ') + 3)"/>
+          <bar-chart :chart-data="chartData[region]" :title="'Cumulative data for ' + region.substring(region.indexOf(' / ') + 3)"/>
         </div>
       </div>
     </div>
@@ -22,37 +27,17 @@
 </template>
 
 <script>
-import LineChart from "@/components/Chart.js";
+import BarChart from "@/components/BarChart.js";
+import PieChart from "@/components/PieChart.js";
 import { mapGetters, mapActions } from "vuex";
-import { cumulativeData, dailyData } from "@/utils/charjsMapper";
+import { cumulativeData, dailyData, cumulativeDataPerDay } from "@/utils/chartjsMapper";
+import { dateToDay, yesterday } from "../utils/dateFormatter";
 
 export default {
   name: "Regions",
-  components: { LineChart },
+  components: { BarChart, PieChart },
   data: () => ({
-    country: "",
-    options: {
-      scales: {
-        xAxes: [
-          {
-            display: false
-          }
-        ],
-        yAxes: [
-          {
-            display: true
-          }
-        ]
-      },
-      layout: {
-        padding: {
-          left: 50,
-          right: 50,
-          top: 50,
-          bottom: 50
-        }
-      }
-    }
+    country: ""
   }),
   methods: mapActions(["fetchStats"]),
   created() {
@@ -71,21 +56,33 @@ export default {
     },
     dailyChartData() {
       return dailyData(this.selectedCountryStats);
+    },
+    deathsDataPerDay() {
+      return cumulativeDataPerDay(this.selectedCountryStats, "deaths")
+    },
+    confirmedDataPerDay() {
+      return cumulativeDataPerDay(this.selectedCountryStats, "confirmedCases")
+    },
+    latestDeathsDataPerDay() {
+      return this.deathsDataPerDay[dateToDay(yesterday())]
+    },
+    latestConfirmedDataPerDay() {
+      return this.confirmedDataPerDay[dateToDay(yesterday())]
     }
   }
 };
 </script>
 
 <style scoped>
-  .chart {
-    float: left;
-    width: 50%;
-  }
+.chart {
+  float: left;
+  width: 50%;
+}
 
-  /* Clear floats after the columns */
-  .regioons:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+/* Clear floats after the columns */
+.regioons:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 </style>

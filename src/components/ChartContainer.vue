@@ -24,7 +24,7 @@
 
 <script>
 //import { mapGetters } from 'vuex'
-import LineChart from "./Chart.js";
+import LineChart from "./BarChart.js";
 
 import { loadData, confirmed, deaths, groupByCountry, toDaily } from '../utils/dataLoader'
 import { dateToDay, dateBeautify } from '../utils/dateFormatter'

@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import LineChart from "./Chart.js";
+import LineChart from "./BarChart.js";
 import { mapGetters, mapActions } from "vuex";
-import { cumulativeLocationData, dailyLocationData } from "../utils/charjsMapper";
+import { cumulativeLocationData, dailyLocationData } from "../utils/chartjsMapper";
 
 export default {
   name: "Countries",
