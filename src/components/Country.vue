@@ -23,7 +23,7 @@
 <script>
 import LineChart from "./Chart.js";
 import { mapGetters, mapActions } from "vuex";
-import { cumulativeCountryData, dailyCountryData } from "../utils/charjsMapper";
+import { cumulativeLocationData, dailyLocationData } from "../utils/charjsMapper";
 
 export default {
   name: "Countries",
@@ -50,7 +50,7 @@ export default {
     this.fetchStats();
   },
   computed: {
-    ...mapGetters(["allStats", "allCountries", "statsForCountry"]),
+    ...mapGetters(["allCountries", "statsForCountry"]),
     selectedCountry() {
       return this.country;
     },
@@ -58,10 +58,10 @@ export default {
       return this.statsForCountry(this.selectedCountry);
     },
     chartData() {
-      return cumulativeCountryData(this.selectedCountryStats);
+      return cumulativeLocationData(this.selectedCountryStats);
     },
     dailyChartData() {
-      return dailyCountryData(this.selectedCountryStats);
+      return dailyLocationData(this.selectedCountryStats);
     }
   }
 };

@@ -1,157 +1,93 @@
 <template>
-  <ul id="containers">
-    <li v-for="country in countries" :key="country">
-      <div class="container">
-        <h2>{{ country }} : {{ _formattedPeriod }}</h2>
+  <div id="regions">
+    <label>Country : </label>
+    <select v-model="country">
+      <option v-for="country in countriesWithRegions" v-bind:key="country">
+        {{ country }}
+      </option>
+    </select>
+    <br />
+    <div v-if="country != ''">
+      <h3>Data for {{ country }}</h3>
+      <div v-for="region in Object.keys(selectedCountryStats)" :key="region">
         <div class="chart">
-        <h3>Daily</h3>
-        <line-chart
-          v-if="loaded"
-          :chartdata="dailyChartData[country]"
-          :options="options"/>
+          <h3>Daily data for {{ region }}</h3>
+          <line-chart :chart-data="dailyChartData[region]" :options="options" />
         </div>
         <div class="chart">
-        <h3>Cumulative</h3>
-        <line-chart
-          v-if="loaded"
-          :chartdata="chartData[country]"
-          :options="options"/>
+          <h3>Cumulative data for {{ region }}</h3>
+          <line-chart :chart-data="chartData[region]" :options="options" />
         </div>
       </div>
-    </li>
-  </ul>
+    </div>
+  </div>
 </template>
 
 <script>
-//import { mapGetters } from 'vuex'
-import LineChart from './Chart.js'
-
-import { loadData, confirmed, deaths, groupByCountry, toDaily } from '../utils/dataLoader'
-import { dateToDay, dateBeautify } from '../utils/dateFormatter'
+import LineChart from "@/components/Chart.js";
+import { mapGetters, mapActions } from "vuex";
+import { cumulativeData, dailyData } from "@/utils/charjsMapper";
 
 export default {
-  name: 'Container',
+  name: "Regions",
   components: { LineChart },
-  props: {
-    countries: {
-      type: Array,
-      default: null
-    },
-    startDate: {
-      type: Date,
-      default: null
-    },
-    endDate: {
-      type: Date,
-      default: null
-    }
-  },
   data: () => ({
-    loaded: false,
-    locations: [],
-    dates: [],
-    chartData: {},
-    dailyChartData: {},
+    country: "",
     options: {
       scales: {
-        xAxes: [{
-          display: false
-        }],
-        yAxes: [{
-          display: true
-        }]
+        xAxes: [
+          {
+            display: false
+          }
+        ],
+        yAxes: [
+          {
+            display: true
+          }
+        ]
+      },
+      layout: {
+        padding: {
+          left: 50,
+          right: 50,
+          top: 50,
+          bottom: 50
+        }
       }
     }
   }),
-  computed: {
-    _to () {
-      console.log('end date: ' + this.endDate)
-      return this.endDate ? dateToDay(this.endDate) : dateToDay(new Date())
-    },
-    _from () {
-      console.log('start date: ' + this.startDate)
-      return this.startDate ? dateToDay(this.startDate) : dateToDay(new Date(2020, 0, 22))
-    },
-    _formattedPeriod () {
-      return `${dateBeautify(this._from)} - ${dateBeautify(this._to)}`
-    }
+  methods: mapActions(["fetchStats"]),
+  created() {
+    this.fetchStats();
   },
-  async mounted () {
-    this.loaded = false
-    try {
-
-        const stats = await loadData(this.countries, this._from, this._to)
-        //console.log('daily stats: ' + JSON.stringify(stats))
-        this.locations = Object.keys(stats)
-        //var firstLocation = locations[0]
-        //console.log('locations: ' + JSON.stringify(this.locations))
-        this.dates = stats[this.locations[0]].map(entry => entry.date)
-        //console.log('dates: ' + JSON.stringify(this.dates))
-        this.countries.forEach(country => {
-          console.log('processing country: ' + country);
-          this.byCountry = groupByCountry(stats);
-          this.confirmed = confirmed(this.byCountry, country);
-          this.deaths = deaths(this.byCountry, country);
-          this.dailyConfirmed = toDaily(this.confirmed);
-          this.dailyDeaths = toDaily(this.deaths);
-          this.chartData[country] = {
-            labels: this.dates,
-            datasets: [
-              {
-                label: "confirmed",
-                backgroundColor: '#f7bf05',
-                borderColor: '#f7bf05',
-                borderWidth: 1,
-                data: this.confirmed
-              },
-              {
-                label: "deaths",
-                backgroundColor: '#fc0000',
-                borderColor: '#fc0000',
-                borderWidth: 1,
-                data: this.deaths
-              }
-            ]
-          }
-          this.dailyChartData[country] = {
-            labels: this.dates,
-            datasets: [
-              {
-                label: "confirmed",
-                backgroundColor: '#f7bf05',
-                borderColor: '#f7bf05',
-                borderWidth: 1,
-                data: this.dailyConfirmed
-              },
-              {
-                label: "deaths",
-                backgroundColor: '#fc0000',
-                borderColor: '#fc0000',
-                borderWidth: 1,
-                data: this.dailyDeaths
-              }
-            ]
-          }
-        })
-        console.log('chart data: ' + JSON.stringify(this.dailyChartData))
-        this.loaded = true
-    } catch (e) {
-      console.error(e)
+  computed: {
+    ...mapGetters(["countriesWithRegions", "statsForRegion"]),
+    selectedCountry() {
+      return this.country;
+    },
+    selectedCountryStats() {
+      return this.statsForRegion(this.selectedCountry);
+    },
+    chartData() {
+      return cumulativeData(this.selectedCountryStats);
+    },
+    dailyChartData() {
+      return dailyData(this.selectedCountryStats);
     }
   }
-}
+};
 </script>
 
-<style>
-.chart {
-  float: left;
-  width: 50%;
-}
+<style scoped>
+  .chart {
+    float: left;
+    width: 50%;
+  }
 
-/* Clear floats after the columns */
-.container:after {
-  content: "";
-  display: table;
-  clear: both;
-}
+  /* Clear floats after the columns */
+  .regioons:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 </style>

@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import World from "../views/World.vue";
 import Continents from "../views/Continents.vue";
 import Countries from "../views/Countries.vue";
-//import Regions from "../views/Regions.vue";
+import Regions from "../views/Regions.vue";
 import Analysis from "../views/Analysis.vue";
 
 Vue.use(VueRouter);
@@ -24,11 +24,11 @@ const routes = [
     name: "Countries",
     component: Countries
   },
-  // {
-  //   path: "/region",
-  //   name: "Regions",
-  //   component: Regions
-  // },
+  {
+    path: "/region",
+    name: "Regions",
+    component: Regions
+  },
   {
     path: "/analysis",
     name: "Analysis",

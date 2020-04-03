@@ -19,14 +19,22 @@ const getters = {
       .filter(
         location => location != country && location.startsWith(country + " / ")
       )
-      .reduce(
-        (regionsStats, key) => (regionsStats[key] = state.state[key]),
-        {}
-      ),
+      .reduce((regionsStats, key) => {
+        regionsStats[key] = state.stats[key];
+        return regionsStats;
+      }, {}),
   allCountries: state =>
     Object.keys(state.stats)
       .filter(location => !location.includes(" / "))
-      .sort()
+      .sort(),
+  countriesWithRegions: state => [
+    ...new Set(
+      Object.keys(state.stats)
+        .filter(location => location.includes(" / "))
+        .map(location => location.substring(0, location.indexOf(" / ")))
+        .sort()
+    )
+  ]
 };
 
 const mutations = {

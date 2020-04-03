@@ -1,28 +1,30 @@
-import { confirmed, deaths, toDaily } from "./dataLoader";
+import { toDaily } from "./dataLoader";
 
-export const cumulativeData = stats => {
-  const locations = Object.keys(stats);
-  const dates = stats[locations[0]].map(entry => entry.date);
-  return locations.reduce((data, location) => {
-    const confirmedStats = confirmed(stats, location);
-    const deathsStats = deaths(stats, location);
-    data[location] = buildChartData(dates, confirmedStats, deathsStats);
+export const cumulativeData = stats =>
+  Object.keys(stats).reduce((data, location) => {
+    data[location] = cumulativeLocationData(stats[location]);
+    return data;
   }, {});
-};
 
-export const cumulativeCountryData = countryStats => {
-  const dates = countryStats.map(entry => entry.date);
-  const confirmedStats = countryStats.map(entry => entry.value.confirmedCases);
-  const deathsStats = countryStats.map(entry => entry.value.deaths);
+export const dailyData = stats =>
+  Object.keys(stats).reduce((data, location) => {
+    data[location] = dailyLocationData(stats[location]);
+    return data;
+  }, {});
+
+export const cumulativeLocationData = locationStats => {
+  const dates = locationStats.map(entry => entry.date);
+  const confirmedStats = locationStats.map(entry => entry.value.confirmedCases);
+  const deathsStats = locationStats.map(entry => entry.value.deaths);
   return buildChartData(dates, confirmedStats, deathsStats);
 };
 
-export const dailyCountryData = countryStats => {
-  const dates = countryStats.map(entry => entry.date);
+export const dailyLocationData = locationStats => {
+  const dates = locationStats.map(entry => entry.date);
   const confirmedStats = toDaily(
-    countryStats.map(entry => entry.value.confirmedCases)
+    locationStats.map(entry => entry.value.confirmedCases)
   );
-  const deathsStats = toDaily(countryStats.map(entry => entry.value.deaths));
+  const deathsStats = toDaily(locationStats.map(entry => entry.value.deaths));
   return buildChartData(dates, confirmedStats, deathsStats);
 };
 
