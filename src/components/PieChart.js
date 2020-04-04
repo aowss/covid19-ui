@@ -20,6 +20,9 @@ export default {
         display: true,
         text: this.title
       },
+      legend: {
+        position: "left"
+      },
       layout: {
         padding: {
           left: 50,

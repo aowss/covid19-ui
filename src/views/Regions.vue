@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import BarChart from "@/components/BarChart.js";
-import PieChart from "@/components/PieChart.js";
+import BarChart from "@/components/BarChart";
+import PieChart from "@/components/PieChart";
 import { mapGetters, mapActions } from "vuex";
 import { cumulativeData, dailyData, topCumulativeDataPerDay } from "@/utils/chartjsMapper";
-import { dateToDay, yesterday } from "../utils/dateFormatter";
+import { dateToDay, yesterday } from "@/utils/dateFormatter";
 
 export default {
   name: "Regions",
@@ -58,16 +58,16 @@ export default {
       return dailyData(this.selectedCountryStats);
     },
     deathsDataPerDay() {
-      return topCumulativeDataPerDay(this.selectedCountryStats, "deaths", 5)
+      return topCumulativeDataPerDay(this.selectedCountryStats, "deaths", 5);
     },
     confirmedDataPerDay() {
-      return topCumulativeDataPerDay(this.selectedCountryStats, "confirmedCases", 5)
+      return topCumulativeDataPerDay(this.selectedCountryStats, "confirmedCases", 5);
     },
     latestDeathsDataPerDay() {
-      return this.deathsDataPerDay[dateToDay(yesterday())]
+      return this.deathsDataPerDay[dateToDay(yesterday())];
     },
     latestConfirmedDataPerDay() {
-      return this.confirmedDataPerDay[dateToDay(yesterday())]
+      return this.confirmedDataPerDay[dateToDay(yesterday())];
     }
   }
 };
@@ -80,7 +80,7 @@ export default {
 }
 
 /* Clear floats after the columns */
-.regioons:after {
+.regions:after {
   content: "";
   display: table;
   clear: both;

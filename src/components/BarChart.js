@@ -16,6 +16,10 @@ export default {
   },
   mounted() {
     var options = {
+      title: {
+        display: true,
+        text: this.title
+      },
       scales: {
         xAxes: [
           {
@@ -27,10 +31,6 @@ export default {
             display: true
           }
         ]
-      },
-      title: {
-        display: true,
-        text: this.title
       },
       layout: {
         padding: {
