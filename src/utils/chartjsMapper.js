@@ -1,4 +1,41 @@
 import { toDaily } from "./dataLoader";
+import { colorsMap } from "./colors";
+
+export const topCumulativeDataPerDay = (stats, property, count, colors) => {
+  const locations = Object.keys(stats);
+  const dates = stats[locations[0]].map(entry => entry.date);
+  const data = dates.reduce((data, date) => {
+    data[date] = locations
+      .flatMap(location => stats[location])
+      .filter(stat => stat.date === date)
+      .map(stat => stat.value[property])
+      .map((value, index) => ({
+        location: locations[index],
+        value: value
+      }));
+    return data;
+  }, {});
+
+  Object.values(data).forEach(stats => stats.sort((a, b) => b.value - a.value));
+
+  var topStats = dates.reduce((topData, date) => {
+    const top = data[date].slice(0, count);
+    const sum = data[date]
+      .slice(count)
+      .reduce((total, stat) => total + stat.value, 0);
+    top.push({
+      location: "Other",
+      value: sum
+    });
+    topData[date] = top;
+    return topData;
+  }, {});
+
+  var backgroundColors = colors != null ? colors : colorsMap(locations);
+
+  return buildPieChartData(topStats, backgroundColors);
+
+};
 
 export const cumulativeDataPerDay = (stats, property) => {
   const locations = Object.keys(stats);
@@ -45,6 +82,56 @@ export const dailyLocationData = locationStats => {
   );
   const deathsStats = toDaily(locationStats.map(entry => entry.value.deaths));
   return buildChartData(dates, confirmedStats, deathsStats);
+};
+
+/*
+from
+{
+  "2020-01-22": [
+    {
+      "location": "Country / Region-3",
+      "value": 7
+    },
+    {
+      "location": "Other",
+      "value": 8
+    }
+  ],
+  ...
+}
+to
+{
+  "2020-01-22": {
+    "labels": [ "Country / Region-3", "Other" ],
+    "datasets": [
+      {
+        "data": [7, 8],
+        "backgroundColor": [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)"
+        ]
+      }
+    ]
+  }
+}
+ */
+
+const buildPieChartData = (data, colors) => {
+  return Object.keys(data).reduce((chartjsData, date) => {
+    var labels = data[date].map(stat => stat.location);
+    var values = data[date].map(stat => stat.value);
+    var backgroundColors = labels.map(label => colors[label]);
+    chartjsData[date] = {
+      labels: labels,
+      datasets: [
+        {
+          data: values,
+          backgroundColor: backgroundColors
+        }
+      ]
+    };
+    return chartjsData;
+  }, {});
 };
 
 const buildChartData = (dates, confirmedStats, deathsStats) => ({

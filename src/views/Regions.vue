@@ -30,7 +30,7 @@
 import BarChart from "@/components/BarChart.js";
 import PieChart from "@/components/PieChart.js";
 import { mapGetters, mapActions } from "vuex";
-import { cumulativeData, dailyData, cumulativeDataPerDay } from "@/utils/chartjsMapper";
+import { cumulativeData, dailyData, topCumulativeDataPerDay } from "@/utils/chartjsMapper";
 import { dateToDay, yesterday } from "../utils/dateFormatter";
 
 export default {
@@ -58,10 +58,10 @@ export default {
       return dailyData(this.selectedCountryStats);
     },
     deathsDataPerDay() {
-      return cumulativeDataPerDay(this.selectedCountryStats, "deaths")
+      return topCumulativeDataPerDay(this.selectedCountryStats, "deaths", 5)
     },
     confirmedDataPerDay() {
-      return cumulativeDataPerDay(this.selectedCountryStats, "confirmedCases")
+      return topCumulativeDataPerDay(this.selectedCountryStats, "confirmedCases", 5)
     },
     latestDeathsDataPerDay() {
       return this.deathsDataPerDay[dateToDay(yesterday())]
