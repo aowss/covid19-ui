@@ -29,7 +29,7 @@
 <script>
 import BarChart from "@/components/BarChart";
 import PieChart from "@/components/PieChart";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { cumulativeData, dailyData, topCumulativeDataPerDay } from "@/utils/chartjsMapper";
 import { dateToDay, yesterday } from "@/utils/dateFormatter";
 
@@ -39,10 +39,6 @@ export default {
   data: () => ({
     country: ""
   }),
-  methods: mapActions(["fetchStats"]),
-  created() {
-    this.fetchStats();
-  },
   computed: {
     ...mapGetters(["countriesWithRegions", "statsForRegion"]),
     selectedCountry() {

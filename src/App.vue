@@ -17,10 +17,15 @@
 <script>
 import JHeader from '@/components/Header'
 import JFooter from '@/components/Footer'
+import {mapActions} from "vuex";
 
 export default {
+  name: 'app',
   components: { JHeader, JFooter },
-  name: 'app'
+  methods: mapActions(["fetchStats"]),
+  created() {
+    this.fetchStats();
+  }
 }
 </script>
 

@@ -20,7 +20,7 @@
 
 <script>
 import BarChart from "@/components/BarChart";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { cumulativeLocationData, dailyLocationData } from "@/utils/chartjsMapper";
 
 export default {
@@ -29,10 +29,6 @@ export default {
   data: () => ({
     country: ""
   }),
-  methods: mapActions(["fetchStats"]),
-  created() {
-    this.fetchStats();
-  },
   computed: {
     ...mapGetters(["allCountries", "statsForCountry"]),
     selectedCountry() {
