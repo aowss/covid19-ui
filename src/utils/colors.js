@@ -33,7 +33,6 @@ export const colorsArray = [
   palette.rosybrown,
   palette.darkslategray,
   palette.lightsteelblue,
-  palette.black,
   palette.darkslateblue,
   palette.whitesmoke,
   palette.grey,
