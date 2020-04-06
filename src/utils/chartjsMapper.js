@@ -1,4 +1,4 @@
-import { toDaily } from "./dataLoader";
+import { toDaily } from "./dataWrangler";
 import { colorsMap } from "./colors";
 
 export const topCumulativeDataPerDay = (stats, property, count, colors) => {

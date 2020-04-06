@@ -3,7 +3,7 @@
 
 import { cumulativeData, dailyData, cumulativeDataPerDay, topCumulativeDataPerDay } from "@/utils/chartjsMapper";
 import { colorsMap } from "@/utils/colors";
-import { palette } from "@/utils/colorsPalette"
+import { palette } from "@/utils/colorsPalette";
 
 describe("bar chart", () => {
 
@@ -151,25 +151,25 @@ describe("bar chart", () => {
 
     expect(confirmed["2020-01-22"].labels).toEqual(["Country / Region-3", "Other"]);
     expect(confirmed["2020-01-22"].datasets[0].data).toEqual([7, 8]);
-    expect(confirmed["2020-01-22"].datasets[0].backgroundColor).toEqual([palette.orange, palette.yellow]);
+    expect(confirmed["2020-01-22"].datasets[0].backgroundColor).toEqual([palette.dimgray, palette.indianred]);
     expect(confirmed["2020-01-23"].labels).toEqual(["Country / Region-1", "Other"]);
     expect(confirmed["2020-01-23"].datasets[0].data).toEqual([15, 15]);
-    expect(confirmed["2020-01-23"].datasets[0].backgroundColor).toEqual([palette.red, palette.yellow]);
+    expect(confirmed["2020-01-23"].datasets[0].backgroundColor).toEqual([palette.darkgray, palette.indianred]);
     expect(confirmed["2020-01-24"].labels).toEqual(["Country / Region-1", "Other"]);
     expect(confirmed["2020-01-24"].datasets[0].data).toEqual([30, 20]);
-    expect(confirmed["2020-01-24"].datasets[0].backgroundColor).toEqual([palette.red, palette.yellow]);
+    expect(confirmed["2020-01-24"].datasets[0].backgroundColor).toEqual([palette.darkgray, palette.indianred]);
 
     const deaths = topCumulativeDataPerDay(regionBreakdown, "deaths", 1);
 
     expect(deaths["2020-01-22"].labels).toEqual(["Country / Region-2", "Other"]);
     expect(deaths["2020-01-22"].datasets[0].data).toEqual([2, 2]);
-    expect(deaths["2020-01-22"].datasets[0].backgroundColor).toEqual([palette.pink, palette.yellow]);
+    expect(deaths["2020-01-22"].datasets[0].backgroundColor).toEqual([palette.lightslategray, palette.indianred]);
     expect(deaths["2020-01-23"].labels).toEqual(["Country / Region-3", "Other"]);
     expect(deaths["2020-01-23"].datasets[0].data).toEqual([5, 8]);
-    expect(deaths["2020-01-23"].datasets[0].backgroundColor).toEqual([palette.orange, palette.yellow]);
+    expect(deaths["2020-01-23"].datasets[0].backgroundColor).toEqual([palette.dimgray, palette.indianred]);
     expect(deaths["2020-01-24"].labels).toEqual(["Country / Region-1", "Other"]);
     expect(deaths["2020-01-24"].datasets[0].data).toEqual([8, 13]);
-    expect(deaths["2020-01-24"].datasets[0].backgroundColor).toEqual([palette.red, palette.yellow]);
+    expect(deaths["2020-01-24"].datasets[0].backgroundColor).toEqual([palette.darkgray, palette.indianred]);
 
   });
 

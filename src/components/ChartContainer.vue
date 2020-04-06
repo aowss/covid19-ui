@@ -26,8 +26,9 @@
 //import { mapGetters } from 'vuex'
 import LineChart from "./BarChart.js";
 
-import { loadData, confirmed, deaths, groupByCountry, toDaily } from '../utils/dataLoader'
-import { dateToDay, dateBeautify } from '../utils/dateFormatter'
+import { loadData } from "@/utils/dataLoader";
+import { confirmed, deaths, groupByCountry, toDaily } from '@/utils/dataWrangler'
+import { dateToDay, dateBeautify } from "@/utils/dateFormatter";
 
 export default {
   name: 'Container',
