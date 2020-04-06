@@ -84,9 +84,9 @@ export const dailyLocationData = locationStats => {
   return buildChartData(dates, confirmedStats, deathsStats);
 };
 
-/*
-from
-{
+/**
+ * Transform data indexed by date to Chartjs pie chart data
+ * @param data {{
   "2020-01-22": [
     {
       "location": "Country / Region-3",
@@ -96,11 +96,10 @@ from
       "location": "Other",
       "value": 8
     }
-  ],
-  ...
-}
-to
-{
+  ]
+}}
+ * @param colors an object that maps the location & 'Other' to a color
+ * @returns {{
   "2020-01-22": {
     "labels": [ "Country / Region-3", "Other" ],
     "datasets": [
@@ -113,9 +112,8 @@ to
       }
     ]
   }
-}
+}}
  */
-
 const buildPieChartData = (data, colors) => {
   return Object.keys(data).reduce((chartjsData, date) => {
     var labels = data[date].map(stat => stat.location);

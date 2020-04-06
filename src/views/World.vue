@@ -1,20 +1,34 @@
 <template>
-  <div class="home">
-    <chart v-bind:countries="['Italy', 'Spain', 'Germany', 'France', 'United Kingdom']" v-bind:startDate="from"/>
+  <div id="world">
+    <div class="">
+      <chart
+        v-bind:countries="[ 'Italy', 'Spain', 'Germany', 'France', 'United Kingdom' ]"
+        v-bind:startDate="from"
+      />
+    </div>
+    <br />
+    <div>
+      <data-table :stats="stats" />
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import Chart from "@/components/ChartContainer.vue";
+import DataTable from "@/components/DataTable.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  name: "home",
+  name: "World",
+  components: { Chart, DataTable },
   data: () => ({
-    from: new Date(2020,0,20),
+    from: new Date(2020, 0, 20)
   }),
-  components: {
-    Chart
+  computed: {
+    ...mapGetters(["countriesStats"]),
+    stats() {
+      return this.countriesStats;
+    }
   }
 };
 </script>

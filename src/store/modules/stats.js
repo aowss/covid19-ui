@@ -54,7 +54,6 @@ export const getters = {
       data[date] = locations
         .flatMap(location => state.stats[location])
         .filter(stat => stat.date === date)
-        // .map(stat => stat.value[property])
         .map((stat, index) => ({
           location: locations[index],
           value: stat.value
@@ -63,6 +62,7 @@ export const getters = {
     }, {});
     return data;
   }
+
 };
 
 const mutations = {
