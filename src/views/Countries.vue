@@ -1,7 +1,7 @@
 <template>
   <div id="countries">
     <label>Country : </label>
-    <select v-model="country">
+    <select v-model="country" @change="onChange($event)">
       <option v-for="country in allCountries" v-bind:key="country">
         {{ country }}
       </option>
@@ -26,9 +26,23 @@ import { cumulativeLocationData, dailyLocationData } from "@/utils/chartjsMapper
 export default {
   name: "Countries",
   components: { BarChart },
-  data: () => ({
-    country: ""
-  }),
+  props: {
+    countryName: {
+      type: String,
+      default: ""
+    }
+  },
+  data: function() {
+    return {
+      country: this.countryName
+    };
+  },
+  methods: {
+    onChange: function(event) {
+      this.country = event.target.value;
+      this.$router.push({ name: 'Countries', params: { countryName: event.target.value } })
+    }
+  },
   computed: {
     ...mapGetters(["allCountries", "statsForCountry"]),
     selectedCountry() {

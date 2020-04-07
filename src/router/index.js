@@ -16,16 +16,29 @@ const routes = [
   },
   {
     path: "/continent",
+    component: Continents
+  },
+  {
+    path: "/continent/:continentName",
     name: "Continents",
     component: Continents
   },
   {
     path: "/country",
+    component: Countries
+  },
+  {
+    path: "/country/:countryName",
     name: "Countries",
+    props: true,
     component: Countries
   },
   {
     path: "/region",
+    component: Regions
+  },
+  {
+    path: "/region/:countryName",
     name: "Regions",
     component: Regions
   },

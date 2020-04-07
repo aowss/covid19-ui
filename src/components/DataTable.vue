@@ -8,6 +8,9 @@
           <b-th colspan="6">Deaths</b-th>
         </b-tr>
       </template>
+      <template v-slot:cell(location)="data">
+        <a :href="`#/country/${data.value}`">{{ data.value }}</a>
+      </template>
       <template v-slot:cell()="data">
         <span v-bind:style="style(data)">{{ data.value }}</span>
       </template>

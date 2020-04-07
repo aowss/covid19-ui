@@ -1,7 +1,7 @@
 <template>
   <div id="regions">
     <label>Country : </label>
-    <select v-model="country">
+    <select v-model="country" @change="onChange($event)">
       <option v-for="country in countriesWithRegions" v-bind:key="country">
         {{ country }}
       </option>
@@ -36,9 +36,24 @@ import { dateToDay, yesterday } from "@/utils/dateFormatter";
 export default {
   name: "Regions",
   components: { BarChart, PieChart },
-  data: () => ({
-    country: ""
-  }),
+  props: {
+    countryName: {
+      type: String,
+      default: ""
+    }
+  },
+  data: function() {
+    return {
+      country: this.countryName
+    };
+  },
+  methods: {
+    onChange: function(event) {
+      this.country = event.target.value;
+      this.$router.push({ name: 'Regions', params: { countryName: event.target.value } })
+    }
+  },
+
   computed: {
     ...mapGetters(["countriesWithRegions", "statsForRegion"]),
     selectedCountry() {
