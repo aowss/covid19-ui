@@ -45,11 +45,8 @@ export default {
   },
   computed: {
     ...mapGetters(["allCountries", "statsForCountry"]),
-    selectedCountry() {
-      return this.country;
-    },
     selectedCountryStats() {
-      return this.statsForCountry(this.selectedCountry);
+      return this.statsForCountry(this.country);
     },
     chartData() {
       return cumulativeLocationData(this.selectedCountryStats);

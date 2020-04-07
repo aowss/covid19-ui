@@ -53,14 +53,10 @@ export default {
       this.$router.push({ name: 'Regions', params: { countryName: event.target.value } })
     }
   },
-
   computed: {
     ...mapGetters(["countriesWithRegions", "statsForRegion"]),
-    selectedCountry() {
-      return this.country;
-    },
     selectedCountryStats() {
-      return this.statsForRegion(this.selectedCountry);
+      return this.statsForRegion(this.country);
     },
     chartData() {
       return cumulativeData(this.selectedCountryStats);
