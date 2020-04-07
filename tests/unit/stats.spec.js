@@ -88,12 +88,12 @@ describe("getters", () => {
     stats: regionBreakdown
   };
 
-  it("allStats", () => {
+  it("'allStats' returns all stats", () => {
     const result = allStats(state);
     expect(result).toEqual(regionBreakdown);
   });
 
-  it("countriesStats", () => {
+  it("'countriesStats' returns stats for countries, i.e. regions are not included", () => {
     const result = countriesStats(state);
     expect(result).toEqual({
       "Country-1": [
@@ -125,7 +125,7 @@ describe("getters", () => {
     });
   });
 
-  it("statsForCountry", () => {
+  it("'statsForCountry' returns stats for a given country", () => {
     const result = statsForCountry(state)("Country-1");
     expect(result).toEqual([
       {
@@ -155,7 +155,7 @@ describe("getters", () => {
     ]);
   });
 
-  it("statsForRegion", () => {
+  it("'statsForRegion' returns stats for all regions of a given country", () => {
     const result = statsForRegion(state)("Country-2");
     expect(result).toEqual({
       "Country-2 / Region-1": [
@@ -213,17 +213,17 @@ describe("getters", () => {
     });
   });
 
-  it("allCountries", () => {
+  it("'allCountries' returns all countries", () => {
     const result = allCountries(state);
     expect(result).toEqual(["Country-1"])
   });
 
-  it("countriesWithRegions", () => {
+  it("'countriesWithRegions' returns all countries that have a breakdown per region", () => {
     const result = countriesWithRegions(state);
     expect(result).toEqual(["Country-2"])
   });
 
-  it("allStatsIndexedByDate", () => {
+  it("'allStatsIndexedByDate' returns all stats indexed by date, not country", () => {
     const result = allStatsIndexedByDate(state);
     expect(result).toEqual({
       "2020-01-22": [
