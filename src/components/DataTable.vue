@@ -34,10 +34,10 @@ export default {
     style: data => {
       if (data.field.key.endsWith(".value")) {
         var [type, date] = data.field.key.split(".");
-        const currentDelta = data.item[type][date].delta;
+        const currentValue = data.item[type][date].value;
         const previousDate = moment(date).subtract(1, "days").format("YYYY-MM-DD");
-        const previousDelta = data.item[type][previousDate].delta;
-        return currentDelta >= previousDelta ? "color:red" : "color:green";
+        const previousValue = data.item[type][previousDate].value;
+        return currentValue > previousValue ? "color:red" : "color:green";
       } else {
         return "color:black";
       }
@@ -71,12 +71,7 @@ export default {
           fields.push({
             key: "confirmed." + date + ".value",
             label: dateBeautify(date),
-            sortable: false,
-            formatter: (value, key, item) => {
-              const delta = item.confirmed[date].delta;
-              if (isNaN(delta) || !isFinite(delta) || value == 0) return value;
-              return value + " ( " + ( delta >= 0 ? "+" + delta : delta ) + " % )";
-            }
+            sortable: false
           });
         }
       });
@@ -92,12 +87,7 @@ export default {
           fields.push({
             key: "deaths." + date + ".value",
             label: dateBeautify(date),
-            sortable: false,
-            formatter: (value, key, item) => {
-              const delta = item.deaths[date].delta;
-              if (isNaN(delta) || !isFinite(delta) || value == 0) return value;
-              return value + " ( " + ( delta >= 0 ? "+" + delta : delta ) + " % )";
-            }
+            sortable: false
           });
         }
       });
