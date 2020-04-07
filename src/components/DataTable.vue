@@ -37,7 +37,11 @@ export default {
         const currentValue = data.item[type][date].value;
         const previousDate = moment(date).subtract(1, "days").format("YYYY-MM-DD");
         const previousValue = data.item[type][previousDate].value;
-        return currentValue > previousValue ? "color:red" : "color:green";
+        if (currentValue === 0) return "color:blue";
+        if (currentValue === previousValue) return "color:black";
+        if (currentValue < previousValue) return "color:green";
+        if (currentValue >= previousValue * 1.1) return "color:red";
+        return "color:orange";
       } else {
         return "color:black";
       }
