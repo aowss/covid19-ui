@@ -14,6 +14,15 @@
       <template v-slot:cell()="data">
         <span v-bind:style="style(data)">{{ data.value }}</span>
       </template>
+      <template v-slot:table-caption>
+        <ul>
+          <li><font color="blue">no deaths / confirmed cases on that day</font></li>
+          <li><font color="black">number  of deaths / confirmed cases is similar to the previous day</font></li>
+          <li><font color="green">number  of deaths / confirmed cases is lower than the previous day</font></li>
+          <li><font color="orange">number  of deaths / confirmed cases is slightly higher ( less than 10 % ) than the previous day</font></li>
+          <li><font color="red">number  of deaths / confirmed cases is significantly higher ( more than 10 % ) than to the previous day</font></li>
+        </ul>
+      </template>
     </b-table>
   </div>
 </template>
