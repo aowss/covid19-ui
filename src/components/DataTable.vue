@@ -69,7 +69,8 @@ export default {
           key: "location",
           label: "Country",
           sortable: true,
-          stickyColumn: true
+          stickyColumn: true,
+          class: "text-left"
         },
         {
           key: "confirmed.total",
