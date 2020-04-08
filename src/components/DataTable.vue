@@ -1,6 +1,18 @@
 <template>
   <div class="data-table">
-    <b-table dark bordered small striped hover :items="items" :fields="fields"
+    <b-col lg="6" class="my-1">
+      <b-form-group label="Filter" label-cols-sm="3" label-align-sm="right" label-size="sm" label-for="filterInput" class="mb-0">
+        <b-input-group size="sm">
+          <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Country Name"></b-form-input>
+          <b-input-group-append>
+            <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form-group>
+    </b-col>
+    <b-table dark bordered small striped hover
+             :items="items" :fields="fields"
+             :filter="filter" :filterIncludedFields="filterOn"
              :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="firstDirectioon" :no-sort-reset="blockSortReset">
       <template v-slot:thead-top="tableData">
         <b-tr>
@@ -47,7 +59,9 @@ export default {
     sortBy: 'confirmed.total',
     sortDesc: true,
     blockSortReset: true,
-    firstDirectioon: "desc"
+    firstDirectioon: "desc",
+    filter: null,
+    filterOn: ['location']
   }),
   methods: {
     style: data => {
