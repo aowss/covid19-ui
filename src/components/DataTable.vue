@@ -1,6 +1,7 @@
 <template>
   <div class="data-table">
-    <b-table bordered small striped hover :items="items" :fields="fields">
+    <b-table dark bordered small striped hover :items="items" :fields="fields"
+             :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="firstDirectioon" :no-sort-reset="blockSortReset">
       <template v-slot:thead-top="tableData">
         <b-tr>
           <b-th colspan="1"><span class="sr-only">Country</span></b-th>
@@ -42,6 +43,12 @@ export default {
       default: null
     }
   },
+  data: () => ({
+    sortBy: 'confirmed.total',
+    sortDesc: true,
+    blockSortReset: true,
+    firstDirectioon: "desc"
+  }),
   methods: {
     style: data => {
       if (data.field.key.endsWith(".value")) {
@@ -83,15 +90,14 @@ export default {
       const dates = Object.keys(this.items[0].confirmed).filter(
         property => property != "total"
       );
-      dates.forEach((date, index) => {
-        if (index <= 4) {
-          fields.push({
-            key: "confirmed." + date + ".value",
-            label: dateBeautify(date),
-            sortable: false
-          });
-        }
-      });
+      for (let i = 4; i >= 0; i--) {
+        let date = dates[i];
+        fields.push({
+          key: "confirmed." + date + ".value",
+          label: dateBeautify(date),
+          sortable: false
+        });
+      }
       fields.push({
         key: "deaths.total",
         label: "Total",
@@ -99,15 +105,14 @@ export default {
         variant: "danger",
         stickyColumn: true
       });
-      dates.forEach((date, index) => {
-        if (index <= 4) {
-          fields.push({
-            key: "deaths." + date + ".value",
-            label: dateBeautify(date),
-            sortable: false
-          });
-        }
-      });
+      for (let i = 4; i >= 0; i--) {
+        let date = dates[i];
+        fields.push({
+          key: "deaths." + date + ".value",
+          label: dateBeautify(date),
+          sortable: false
+        });
+      }
       return fields;
     },
     tableData() {
