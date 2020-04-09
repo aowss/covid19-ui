@@ -1,7 +1,7 @@
 <template>
   <div class="data-table">
     <b-col lg="6" class="my-1">
-      <b-form-group label="Filter" label-cols-sm="3" label-align-sm="right" label-size="sm" label-for="filterInput" class="mb-0">
+      <b-form-group label="Filter" label-cols-sm="1" label-align-sm="right" label-size="sm" label-for="filterInput" class="mb-0">
         <b-input-group size="sm">
           <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Country Name"></b-form-input>
           <b-input-group-append>
@@ -10,6 +10,18 @@
         </b-input-group>
       </b-form-group>
     </b-col>
+    <br>
+    <table width="100%">
+      <tr>
+        <td><span style="background-color:white; color:black">Color Key</span></td>
+        <td class="table-dark"><span style="color:white">no deaths / cases on that day</span></td>
+        <td class="table-dark"><span style="color:skyblue">same as the previous day</span></td>
+        <td class="table-dark"><span style="color:green">lower than the previous day</span></td>
+        <td class="table-dark"><span style="color:orange">slightly higher than the previous day</span></td>
+        <td class="table-dark"><span style="color:red">significantly higher than the previous day</span></td>
+      </tr>
+    </table>
+    <br>
     <b-table dark bordered small striped hover
              :items="items" :fields="fields"
              :filter="filter" :filterIncludedFields="filterOn"
@@ -26,15 +38,6 @@
       </template>
       <template v-slot:cell()="data">
         <span v-bind:style="style(data)">{{ data.value }}</span>
-      </template>
-      <template v-slot:table-caption>
-        <ul>
-          <li><font color="blue">no deaths / confirmed cases on that day</font></li>
-          <li><font color="black">number  of deaths / confirmed cases is similar to the previous day</font></li>
-          <li><font color="green">number  of deaths / confirmed cases is lower than the previous day</font></li>
-          <li><font color="orange">number  of deaths / confirmed cases is slightly higher ( less than 10 % ) than the previous day</font></li>
-          <li><font color="red">number  of deaths / confirmed cases is significantly higher ( more than 10 % ) than to the previous day</font></li>
-        </ul>
       </template>
     </b-table>
   </div>
@@ -70,8 +73,8 @@ export default {
         const currentValue = data.item[type][date].value;
         const previousDate = moment(date).subtract(1, "days").format("YYYY-MM-DD");
         const previousValue = data.item[type][previousDate].value;
-        if (currentValue === 0) return "color:blue";
-        if (currentValue === previousValue) return "color:black";
+        if (currentValue === 0) return "color:white";
+        if (currentValue === previousValue) return "color:skyblue";
         if (currentValue < previousValue) return "color:green";
         if (currentValue >= previousValue * 1.1) return "color:red";
         return "color:orange";
