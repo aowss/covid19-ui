@@ -1,4 +1,4 @@
-import { Doughnut, mixins} from "vue-chartjs";
+import { Doughnut, mixins } from "vue-chartjs";
 const { reactiveProp } = mixins;
 
 export default {
@@ -35,31 +35,3 @@ export default {
     this.renderChart(this.chartData, options);
   }
 };
-
-/*
-{
-  "type": "doughnut",
-  "data": {
-    "labels": [
-      "Red",
-      "Blue",
-      "Yellow"
-    ],
-    "datasets": [
-      {
-        "label": "My First Dataset",
-        "data": [
-          300,
-          50,
-          100
-        ],
-        "backgroundColor": [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)"
-        ]
-      }
-    ]
-  }
-}
- */

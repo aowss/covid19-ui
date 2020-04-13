@@ -11,6 +11,15 @@
     </div>
     <br />
     <div>
+      <h3>Most Affected</h3>
+      <div class="chart">
+        <pie-chart :chart-data="latestDeathsDataPerDay" :title="'Deaths'"/>
+      </div>
+      <div class="chart">
+        <pie-chart :chart-data="latestConfirmedDataPerDay" :title="'Confirmed Cases'"/>
+      </div>
+    </div>
+    <div>
       <h3>Raw Data</h3>
       <div>
         <data-table :stats="stats" />
@@ -21,18 +30,20 @@
 
 <script>
 import BarChart from "@/components/BarChart";
+import PieChart from "@/components/PieChart";
 import DataTable from "@/components/DataTable.vue";
 
 import { mergeAllStats } from "@/utils/dataWrangler";
-import { cumulativeLocationData, dailyLocationData } from "@/utils/chartjsMapper";
+import { dateToDay, yesterday } from "@/utils/dateFormatter";
+import { cumulativeLocationData, dailyLocationData, topCumulativeDataPerDay } from "@/utils/chartjsMapper";
 
 import { mapGetters } from "vuex";
 
 export default {
   name: "World",
-  components: { DataTable, BarChart },
+  components: { DataTable, BarChart, PieChart },
   computed: {
-    ...mapGetters(["isLoaded", "allStats", "countriesStats"]),
+    ...mapGetters(["isLoaded", "allStats"]),
     stats() {
       return this.allStats;
     },
@@ -44,6 +55,18 @@ export default {
     },
     aggregatedDailyChartData() {
       return dailyLocationData(this.aggregatedStats);
+    },
+    deathsDataPerDay() {
+      return topCumulativeDataPerDay(this.stats, "deaths", 5);
+    },
+    confirmedDataPerDay() {
+      return topCumulativeDataPerDay(this.stats, "confirmedCases", 5);
+    },
+    latestDeathsDataPerDay() {
+      return this.deathsDataPerDay[dateToDay(yesterday())];
+    },
+    latestConfirmedDataPerDay() {
+      return this.confirmedDataPerDay[dateToDay(yesterday())];
     }
   }
 };
