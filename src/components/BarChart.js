@@ -23,7 +23,10 @@ export default {
       scales: {
         xAxes: [
           {
-            display: false
+            type: 'time',
+            time: {
+              unit: 'month'
+            }
           }
         ],
         yAxes: [
