@@ -3,10 +3,10 @@
     <div>
       <h3>Worldwide Statistics</h3>
       <div class="chart">
-        <bar-chart :chart-data="aggregatedDailyChartData" :title="'World Daily Statistics'"/>
+        <bar-chart :chart-data="aggregatedDailyChartData" :title="'Daily'"/>
       </div>
       <div class="chart">
-        <bar-chart :chart-data="aggregatedChartData" :title="'World Cumulative Statistics'"/>
+        <bar-chart :chart-data="aggregatedChartData" :title="'Cumulative'"/>
       </div>
     </div>
     <br />

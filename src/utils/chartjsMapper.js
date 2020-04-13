@@ -72,16 +72,16 @@ export const cumulativeLocationData = locationStats => {
   const dates = locationStats.map(entry => entry.date);
   const confirmedStats = locationStats.map(entry => entry.value.confirmedCases);
   const deathsStats = locationStats.map(entry => entry.value.deaths);
-  return buildChartData(dates, confirmedStats, deathsStats);
+  const recoveredStats = locationStats.map(entry => entry.value.recoveries);
+  return buildChartData(dates, confirmedStats, deathsStats, recoveredStats);
 };
 
 export const dailyLocationData = locationStats => {
   const dates = locationStats.map(entry => entry.date);
-  const confirmedStats = toDaily(
-    locationStats.map(entry => entry.value.confirmedCases)
-  );
+  const confirmedStats = toDaily(locationStats.map(entry => entry.value.confirmedCases));
   const deathsStats = toDaily(locationStats.map(entry => entry.value.deaths));
-  return buildChartData(dates, confirmedStats, deathsStats);
+  const recoveredStats = toDaily(locationStats.map(entry => entry.value.recoveries));
+  return buildChartData(dates, confirmedStats, deathsStats, recoveredStats);
 };
 
 /**
@@ -132,22 +132,29 @@ const buildPieChartData = (data, colors) => {
   }, {});
 };
 
-const buildChartData = (dates, confirmedStats, deathsStats) => ({
+const buildChartData = (dates, confirmedStats, deathsStats, recoveredStats) => ({
   labels: dates,
   datasets: [
-    {
-      label: "confirmed",
-      backgroundColor: "#f7bf05",
-      borderColor: "#f7bf05",
-      borderWidth: 1,
-      data: confirmedStats
-    },
     {
       label: "deaths",
       backgroundColor: "#fc0000",
       borderColor: "#fc0000",
       borderWidth: 1,
       data: deathsStats
+    },
+    {
+      label: "recovered",
+      backgroundColor: "#006400",
+      borderColor: "#006400",
+      borderWidth: 1,
+      data: recoveredStats
+    },
+    {
+      label: "confirmed",
+      backgroundColor: "#f7bf05",
+      borderColor: "#f7bf05",
+      borderWidth: 1,
+      data: confirmedStats
     }
   ]
 });
