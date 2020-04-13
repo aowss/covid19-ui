@@ -74,7 +74,7 @@ describe("bar chart", () => {
         value: {
           confirmedCases: 9,
           deaths: 5,
-          recoveries: 0
+          recoveries: 1
         }
       },
       {
@@ -94,15 +94,15 @@ describe("bar chart", () => {
 
     Object.values(chartjsData).forEach(value => expect(value.labels).toEqual(["2020-01-22", "2020-01-23", "2020-01-24"]));
 
-    expect(chartjsData["Country / Region-1"].datasets[0].label).toEqual("confirmed");
-    expect(chartjsData["Country / Region-1"].datasets[0].data).toEqual([5, 15, 30]);
-    expect(chartjsData["Country / Region-1"].datasets[1].label).toEqual("deaths");
-    expect(chartjsData["Country / Region-1"].datasets[1].data).toEqual([1, 4, 8]);
+    expect(chartjsData["Country / Region-1"].datasets[2].label).toEqual("confirmed");
+    expect(chartjsData["Country / Region-1"].datasets[2].data).toEqual([5, 15, 30]);
+    expect(chartjsData["Country / Region-1"].datasets[0].label).toEqual("deaths");
+    expect(chartjsData["Country / Region-1"].datasets[0].data).toEqual([1, 4, 8]);
 
-    expect(chartjsData["Country / Region-2"].datasets[0].label).toEqual("confirmed");
-    expect(chartjsData["Country / Region-2"].datasets[0].data).toEqual([3, 6, 9]);
-    expect(chartjsData["Country / Region-2"].datasets[1].label).toEqual("deaths");
-    expect(chartjsData["Country / Region-2"].datasets[1].data).toEqual([2, 4, 6]);
+    expect(chartjsData["Country / Region-2"].datasets[2].label).toEqual("confirmed");
+    expect(chartjsData["Country / Region-2"].datasets[2].data).toEqual([3, 6, 9]);
+    expect(chartjsData["Country / Region-2"].datasets[0].label).toEqual("deaths");
+    expect(chartjsData["Country / Region-2"].datasets[0].data).toEqual([2, 4, 6]);
 
   });
 
@@ -112,15 +112,15 @@ describe("bar chart", () => {
 
     Object.values(chartjsData).forEach(value => expect(value.labels).toEqual(["2020-01-22", "2020-01-23", "2020-01-24"]));
 
-    expect(chartjsData["Country / Region-1"].datasets[0].label).toEqual("confirmed");
-    expect(chartjsData["Country / Region-1"].datasets[0].data).toEqual([5, 10, 15]);
-    expect(chartjsData["Country / Region-1"].datasets[1].label).toEqual("deaths");
-    expect(chartjsData["Country / Region-1"].datasets[1].data).toEqual([1, 3, 4]);
+    expect(chartjsData["Country / Region-1"].datasets[2].label).toEqual("confirmed");
+    expect(chartjsData["Country / Region-1"].datasets[2].data).toEqual([5, 10, 15]);
+    expect(chartjsData["Country / Region-1"].datasets[0].label).toEqual("deaths");
+    expect(chartjsData["Country / Region-1"].datasets[0].data).toEqual([1, 3, 4]);
 
-    expect(chartjsData["Country / Region-2"].datasets[0].label).toEqual("confirmed");
-    expect(chartjsData["Country / Region-2"].datasets[0].data).toEqual([3, 3, 3]);
-    expect(chartjsData["Country / Region-2"].datasets[1].label).toEqual("deaths");
-    expect(chartjsData["Country / Region-2"].datasets[1].data).toEqual([2, 2, 2]);
+    expect(chartjsData["Country / Region-2"].datasets[2].label).toEqual("confirmed");
+    expect(chartjsData["Country / Region-2"].datasets[2].data).toEqual([3, 3, 3]);
+    expect(chartjsData["Country / Region-2"].datasets[0].label).toEqual("deaths");
+    expect(chartjsData["Country / Region-2"].datasets[0].data).toEqual([2, 2, 2]);
 
   });
 
