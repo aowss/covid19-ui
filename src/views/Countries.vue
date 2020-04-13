@@ -8,6 +8,9 @@
     </select>
     <br />
     <div v-if="country != ''">
+      <div v-if="this.countriesWithRegions.includes(country)">
+        <a :href="`#/region/${country}`">See {{country}} breakdown per region</a>
+      </div>
       <div class="chart">
         <bar-chart :chart-data="dailyChartData" :title="'Daily data for ' + country"/>
       </div>
@@ -44,7 +47,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["allCountries", "statsForCountry"]),
+    ...mapGetters(["allCountries", "statsForCountry", "countriesWithRegions"]),
     selectedCountryStats() {
       return this.statsForCountry(this.country);
     },

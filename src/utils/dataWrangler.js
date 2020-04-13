@@ -8,6 +8,31 @@ const mergeStats = (first, second) => {
   return first;
 };
 
+//  Assumption : same dates in both and ordered
+export const mergeAllStats = stats => {
+  const result = [];
+  for (var i = 0; i < stats[0].length; i++) {
+    var date = stats[0][i].date;
+    var confirmedCases = 0;
+    var deaths = 0;
+    var recoveries = 0;
+    for (var j = 0; j < stats.length; j++) {
+      confirmedCases += stats[j][i].value.confirmedCases;
+      deaths += stats[j][i].value.deaths;
+      recoveries += stats[j][i].value.recoveries;
+    }
+    result.push({
+      date: date,
+      value: {
+        confirmedCases: confirmedCases,
+        deaths: deaths,
+        recoveries: recoveries
+      }
+    });
+  }
+  return result;
+};
+
 export const groupByCountry = response => {
   var result = {};
   Object.keys(response).forEach(key => {

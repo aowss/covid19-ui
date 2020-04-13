@@ -1,7 +1,8 @@
 import { loadData } from "@/utils/dataLoader";
 
 const state = {
-  stats: {}
+  stats: {},
+  loaded: false
 };
 
 const actions = {
@@ -13,6 +14,7 @@ const actions = {
 
 export const getters = {
 
+  isLoaded: state => state.loaded,
   allStats: state => state.stats,
 
   countriesStats: state =>
@@ -66,7 +68,10 @@ export const getters = {
 };
 
 const mutations = {
-  refreshStats: (state, stats) => (state.stats = stats)
+  refreshStats: (state, stats) => {
+    state.stats = stats;
+    state.loaded = true;
+  }
 };
 
 export default {

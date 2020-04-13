@@ -1,33 +1,49 @@
 <template>
-  <div id="world">
-    <div class="">
-      <chart
-        v-bind:countries="[ 'Italy', 'Spain', 'Germany', 'France', 'United Kingdom' ]"
-        v-bind:startDate="from"
-      />
+  <div v-if="isLoaded" id="world">
+    <div>
+      <h3>Worldwide Statistics</h3>
+      <div class="chart">
+        <bar-chart :chart-data="aggregatedDailyChartData" :title="'World Daily Statistics'"/>
+      </div>
+      <div class="chart">
+        <bar-chart :chart-data="aggregatedChartData" :title="'World Cumulative Statistics'"/>
+      </div>
     </div>
     <br />
     <div>
-      <data-table :stats="stats" />
+      <h3>Raw Data</h3>
+      <div>
+        <data-table :stats="stats" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Chart from "@/components/ChartContainer.vue";
+import BarChart from "@/components/BarChart";
 import DataTable from "@/components/DataTable.vue";
+
+import { mergeAllStats } from "@/utils/dataWrangler";
+import { cumulativeLocationData, dailyLocationData } from "@/utils/chartjsMapper";
+
 import { mapGetters } from "vuex";
 
 export default {
   name: "World",
-  components: { Chart, DataTable },
-  data: () => ({
-    from: new Date(2020, 0, 20)
-  }),
+  components: { DataTable, BarChart },
   computed: {
-    ...mapGetters(["countriesStats"]),
+    ...mapGetters(["isLoaded", "allStats", "countriesStats"]),
     stats() {
-      return this.countriesStats;
+      return this.allStats;
+    },
+    aggregatedStats() {
+      return mergeAllStats(Object.values(this.stats));
+    },
+    aggregatedChartData() {
+      return cumulativeLocationData(this.aggregatedStats);
+    },
+    aggregatedDailyChartData() {
+      return dailyLocationData(this.aggregatedStats);
     }
   }
 };
