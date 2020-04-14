@@ -1,14 +1,18 @@
 <template>
   <div v-if="isLoaded" id="world">
 
+    <p>World Statistics for the following period : {{period}}</p>
+
     <div class="row">
       <b-alert class="col-sm" show variant="danger">Deaths {{totalDeaths}}</b-alert>
       <b-alert class="col-sm" show variant="success">Recovered : {{totalRecovered}}</b-alert>
       <b-alert class="col-sm" show variant="warning">Infected: {{totalInfected}}</b-alert>
     </div>
+
     <br/>
+
     <div class="col-md-10 offset-md-1">
-      <b-progress :max="totalConfirmedCases" height="4rem" show-value>
+      <b-progress :max="totalConfirmedCases" height="3rem" show-value>
         <b-progress-bar :value="totalDeaths" variant="danger">Deaths <strong>{{totalDeaths}}</strong></b-progress-bar>
         <b-progress-bar :value="totalRecovered" variant="success">Recoveries <strong>{{totalRecovered}}</strong></b-progress-bar>
         <b-progress-bar :value="totalInfected" variant="warning">Infected <strong>{{totalInfected}}</strong></b-progress-bar>
@@ -57,7 +61,7 @@ import PieChart from "@/components/PieChart";
 import DataTable from "@/components/DataTable.vue";
 
 import { mergeAllStats, topStat } from "@/utils/dataWrangler";
-import { dateToDay, yesterday } from "@/utils/dateFormatter";
+import { dateToDay, yesterday, dateBeautify } from "@/utils/dateFormatter";
 import { colorsMap } from "@/utils/colors";
 import { cumulativeLocationData, dailyLocationData, buildPieChartData } from "@/utils/chartjsMapper";
 
@@ -70,6 +74,10 @@ export default {
     ...mapGetters(["isLoaded", "allStats"]),
     stats() {
       return this.allStats;
+    },
+    period() {
+      const locationStats = Object.values(this.stats)[0];
+      return dateBeautify(locationStats[0].date) + " - " + dateBeautify(locationStats[locationStats.length - 1].date);
     },
     aggregatedStats() {
       return mergeAllStats(this.stats);
