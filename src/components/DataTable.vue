@@ -46,8 +46,7 @@
 <script>
 import { BTable } from "bootstrap-vue";
 import { details } from "@/utils/tableMapper";
-import { dateBeautify } from "@/utils/dateFormatter";
-import moment from "moment";
+import { dateBeautify, previousDay } from "@/utils/dateFormatter";
 
 export default {
   name: "DataTable",
@@ -71,7 +70,7 @@ export default {
       if (data.field.key.endsWith(".value")) {
         var [type, date] = data.field.key.split(".");
         const currentValue = data.item[type][date].value;
-        const previousDate = moment(date).subtract(1, "days").format("YYYY-MM-DD");
+        const previousDate = previousDay(date);
         const previousValue = data.item[type][previousDate].value;
         if (currentValue === 0) return "color:white";
         if (currentValue === previousValue) return "color:skyblue";
