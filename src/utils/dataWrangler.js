@@ -72,13 +72,8 @@ export const groupByCountry = response => {
   var result = {};
   Object.keys(response).forEach(key => {
     var groupedKey = key.split(" / ")[0];
-    // console.log('from ' + key + ' to ' + groupedKey);
     if (groupedKey in result) {
-      // var size = result[groupedKey].length;
-      // console.log('current data for ' + groupedKey + ' @ ' + result[groupedKey][size - 1]['date'] + ' : ' + JSON.stringify(result[groupedKey][size - 1]));
-      // console.log('data to merge for ' + groupedKey + ' : ' + JSON.stringify(response[key][size - 1]));
       result[groupedKey] = mergeStats(result[groupedKey], response[key]);
-      // console.log('merged data for ' + groupedKey + ' : ' + JSON.stringify(result[groupedKey][size - 1]));
     } else {
       result[groupedKey] = response[key];
     }

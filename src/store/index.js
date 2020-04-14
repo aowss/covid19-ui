@@ -1,6 +1,6 @@
 import Vuex from "vuex";
 import Vue from "vue";
-import stats from "./modules/stats";
+import stats from "@/store/modules/stats";
 
 Vue.use(Vuex);
 

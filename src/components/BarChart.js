@@ -1,5 +1,5 @@
 import { Bar, mixins } from "vue-chartjs";
-import { previousDay, nextDay } from "../utils/dateFormatter";
+import { previousDay, nextDay } from "@/utils/dateFormatter";
 const { reactiveProp } = mixins;
 
 export default {
@@ -38,9 +38,9 @@ export default {
       scales: {
         xAxes: [
           {
-            type: 'time',
+            type: "time",
             time: {
-              unit: 'month'
+              unit: "month"
             }
           }
         ],

@@ -1,10 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import World from "../views/World.vue";
-import Continents from "../views/Continents.vue";
-import Countries from "../views/Countries.vue";
-import Regions from "../views/Regions.vue";
-import Analysis from "../views/Analysis.vue";
+import World from "@/views/World.vue";
+import Continents from "@/views/Continents.vue";
+import Countries from "@/views/Countries.vue";
+import Regions from "@/views/Regions.vue";
+import Analysis from "@/views/Analysis.vue";
 
 Vue.use(VueRouter);
 

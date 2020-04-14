@@ -3,7 +3,6 @@
 ## Details
 
 The [colors](./src/utils/colorsPalette.js) were sources at https://github.com/bahamas10/css-color-names.  
-The color palette was chosen by my daughter Iman.
 
 ## Project setup
 ```

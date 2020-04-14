@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import LineChart from "./BarChart.js";
+import LineChart from "@/components/BarChart.js";
 
 import { loadData } from "@/utils/dataLoader";
 import { confirmed, deaths, groupByCountry, toDaily } from "@/utils/dataWrangler";

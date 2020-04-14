@@ -1,13 +1,15 @@
 <template>
   <div id="app">
     <j-header></j-header>
-    <div id="nav">
-      <router-link to="/">World</router-link> |
-      <router-link to="/continent">Continents</router-link> |
-      <router-link to="/country">Countries</router-link> |
-      <router-link to="/region">Regions</router-link> |
-      <router-link to="/analysis">Analysis</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="container" id="nav">
+      <div class="row">
+        <div class="col-lg-2"><button type="button" class="btn btn-outline-primary btn-lg"><router-link to="/">World</router-link></button></div>
+        <div class="col-lg-2"><button type="button" class="btn btn-outline-primary btn-lg"><router-link to="/continent">Continents</router-link></button></div>
+        <div class="col-lg-2"><button type="button" class="btn btn-outline-primary btn-lg"><router-link to="/country">Countries</router-link></button></div>
+        <div class="col-lg-2"><button type="button" class="btn btn-outline-primary btn-lg"><router-link to="/region">Regions</router-link></button></div>
+        <div class="col-lg-2"><button type="button" class="btn btn-outline-primary btn-lg"><router-link to="/analysis">Analysis</router-link></button></div>
+        <div class="col-lg-2"><button type="button" class="btn btn-outline-primary btn-lg"><router-link to="/about">About</router-link></button></div>
+      </div>
     </div>
     <router-view />
     <j-footer></j-footer>
@@ -15,18 +17,18 @@
 </template>
 
 <script>
-import JHeader from '@/components/Header'
-import JFooter from '@/components/Footer'
-import {mapActions} from "vuex";
+import JHeader from "@/components/Header";
+import JFooter from "@/components/Footer";
+import { mapActions } from "vuex";
 
 export default {
-  name: 'app',
+  name: "app",
   components: { JHeader, JFooter },
   methods: mapActions(["fetchStats"]),
   created() {
     this.fetchStats();
   }
-}
+};
 </script>
 
 <style>

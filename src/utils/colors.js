@@ -1,4 +1,4 @@
-import { palette } from "./colorsPalette";
+import { palette } from "@/utils/colorsPalette";
 
 export const lightColorsArray = [
   palette.darkseagreen,
