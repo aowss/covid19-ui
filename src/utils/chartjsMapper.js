@@ -114,7 +114,7 @@ export const dailyLocationData = locationStats => {
   }
 }}
  */
-const buildPieChartData = (data, colors) => {
+export const buildPieChartData = (data, colors) => {
   return Object.keys(data).reduce((chartjsData, date) => {
     var labels = data[date].map(stat => stat.location);
     var values = data[date].map(stat => stat.value);
