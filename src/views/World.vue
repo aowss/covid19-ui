@@ -72,7 +72,7 @@ export default {
       return this.allStats;
     },
     aggregatedStats() {
-      return mergeAllStats(Object.values(this.stats));
+      return mergeAllStats(this.stats);
     },
     totalConfirmedCases() {
       return this.aggregatedStats[this.aggregatedStats.length - 1].value.confirmedCases;

@@ -8,18 +8,24 @@ const mergeStats = (first, second) => {
   return first;
 };
 
-//  Assumption : same dates in both and ordered
+/**
+ * Aggregates the statistics across locations
+ * Assumption : same dates in all locations and same order
+ * @param {Object} stats - The statistics object. Each key is a location and each value is  an array of statistic objects.
+ * @returns {Object[]} - An array of aggregated statistics. Each object is the aggregattion for a given date.
+ */
 export const mergeAllStats = stats => {
+  const allStats = Object.values(stats);
   const result = [];
-  for (var i = 0; i < stats[0].length; i++) {
-    var date = stats[0][i].date;
+  for (var i = 0; i < allStats[0].length; i++) {
+    var date = allStats[0][i].date;
     var confirmedCases = 0;
     var deaths = 0;
     var recoveries = 0;
-    for (var j = 0; j < stats.length; j++) {
-      confirmedCases += stats[j][i].value.confirmedCases;
-      deaths += stats[j][i].value.deaths;
-      recoveries += stats[j][i].value.recoveries;
+    for (var j = 0; j < allStats.length; j++) {
+      confirmedCases += allStats[j][i].value.confirmedCases;
+      deaths += allStats[j][i].value.deaths;
+      recoveries += allStats[j][i].value.recoveries;
     }
     result.push({
       date: date,

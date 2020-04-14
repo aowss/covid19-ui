@@ -164,7 +164,7 @@ describe("data wrangler", () => {
   };
 
   test("merge all stats", () => {
-    const result = mergeAllStats(Object.values(countryBreakdown));
+    const result = mergeAllStats(countryBreakdown);
     expect(result).toEqual(aggregate);
   });
 
