@@ -12,26 +12,71 @@ const routes = [
   {
     path: "/",
     name: "World",
-    component: World
+    component: World,
+    meta: {
+      title: 'Covid-19 World View',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'The Covid-19 world statistics.'
+        }
+      ]
+    }
   },
   {
     path: "/continent",
-    component: Continents
+    component: Continents,
+    meta: {
+      title: 'Covid-19 Continents View',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'The Covid-19 continents statistics.'
+        }
+      ]
+    }
   },
   {
     path: "/continent/:continentName",
     name: "Continents",
-    component: Continents
+    component: Continents,
+    meta: {
+      title: 'Covid-19 Continents View',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'The Covid-19 continents statistics.'
+        }
+      ]
+    }
   },
   {
     path: "/country",
-    component: Countries
+    component: Countries,
+    meta: {
+      title: 'Covid-19 Countries View',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'The Covid-19 countries statistics.'
+        }
+      ]
+    }
   },
   {
     path: "/country/:countryName",
     name: "Countries",
     props: true,
-    component: Countries
+    component: Countries,
+    meta: {
+      title: 'Covid-19 Countries View',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'The Covid-19 countries statistics.'
+        }
+      ]
+    }
   },
   {
     path: "/region",
@@ -45,7 +90,16 @@ const routes = [
   {
     path: "/analysis",
     name: "Analysis",
-    component: Analysis
+    component: Analysis,
+    meta: {
+      title: 'Covid-19 Analysis',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'The Covid-19 statistics analysis.'
+        }
+      ]
+    }
   },
   {
     path: "/about",
@@ -60,6 +114,11 @@ const routes = [
 
 const router = new VueRouter({
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title || "Covid-19 Statistics";
+  next();
 });
 
 export default router;
