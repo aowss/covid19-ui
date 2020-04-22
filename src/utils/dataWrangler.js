@@ -13,12 +13,12 @@ const mergeStats = (first, second) => {
  *
  * @callback statisticPredicate
  * @param {Object} statistic - The statistic for a given day
- * @param {string} statistic.date - The statistic's date.
- * @param {string} statistic.value - The statistic's value.
- * @param {string} statistic.value.confirmedCases - The number of confirmed cases.
- * @param {string} statistic.value.deaths - The number of deaths.
- * @param {string} statistic.value.recoveries - The number of recoveries.
- * @param {boolean} whether the statistic should be removed or not
+ * @param {string} statistic.date - The statistic's date in 'YYYY-MM-dd' format.
+ * @param {Object} statistic.value - The statistic's value.
+ * @param {number} statistic.value.confirmedCases - The number of confirmed cases.
+ * @param {number} statistic.value.deaths - The number of deaths.
+ * @param {number} statistic.value.recoveries - The number of recoveries.
+ * @param {boolean} remove - Flag saying if the statistic should be removed or not based on the passed condition
  */
 
 /**
@@ -46,8 +46,7 @@ export const removeLeadingDates = (stats, condition) => {
 /**
  * Aggregates the statistics across locations.
  * Assumption : same dates in all locations and same order.
- *
- * @param {Object} stats - The statistics object. Each key is a location and each value is  an array of statistic objects.
+ * @param {Object} stats - The statistics object. Each key is a location and each value is an array of statistic objects.
  * @returns {Object[]} - An array of aggregated statistics. Each object is the aggregation for a given date.
  */
 export const mergeAllStats = stats => {

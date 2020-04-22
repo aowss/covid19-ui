@@ -15,6 +15,7 @@ const actions = {
 export const getters = {
 
   isLoaded: state => state.loaded,
+
   allStats: state => state.stats,
 
   countriesStats: state =>

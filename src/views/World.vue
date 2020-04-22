@@ -11,16 +11,6 @@
 
     <br/>
 
-    <div class="col-md-10 offset-md-1">
-      <b-progress :max="totalConfirmedCases" height="3rem" show-value>
-        <b-progress-bar :value="totalDeaths" variant="danger">Deaths <strong>{{totalDeaths}}</strong></b-progress-bar>
-        <b-progress-bar :value="totalRecovered" variant="success">Recoveries <strong>{{totalRecovered}}</strong></b-progress-bar>
-        <b-progress-bar :value="totalInfected" variant="warning">Infected <strong>{{totalInfected}}</strong></b-progress-bar>
-      </b-progress>
-    </div>
-
-    <br/>
-
     <div>
       <h3>Worldwide Evolution</h3>
       <div class="chart">
@@ -43,7 +33,7 @@
       </div>
     </div>
 
-    <br />
+    <br/>
 
     <div>
       <h3>Raw Data</h3>
