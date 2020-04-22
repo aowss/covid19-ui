@@ -31,6 +31,7 @@
 <script>
 import GeoChart from "@/components/GeoChart.vue";
 import { latest } from "@/utils/dataWrangler";
+import { region } from "@/utils/countries";
 import { mapGetters } from "vuex";
 
 export default {
@@ -56,14 +57,15 @@ export default {
   },
   computed: {
     ...mapGetters(["isLoaded", "allStats"]),
-    stats() {
-      return this.allStats;
+    selectedContinentStats() {
+      // eslint-disable-next-line no-unused-vars
+      return Object.fromEntries(Object.entries(this.allStats).filter(([key, value]) => region(key) === this.continent));
     },
     latestDeaths() {
-      return latest(this.stats, "deaths");
+      return latest(this.selectedContinentStats, "deaths");
     },
     latestConfirmed() {
-      return latest(this.stats, "confirmedCases");
+      return  latest(this.selectedContinentStats, "confirmedCases");
     }
   }
 };
