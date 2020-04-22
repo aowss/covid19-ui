@@ -41,6 +41,39 @@ export const colorsArray = [
   palette.linen
 ];
 
+export const heatMapColors = [
+  palette.lightsalmon,
+  palette.salmon,
+  palette.darksalmon,
+  palette.lightcoral,
+  palette.indianred,
+  palette.crimson,
+  palette.firebrick,
+  palette.red,
+  palette.darkred
+];
+
+export const heatMapColorsBlue = [
+  palette.powderblue,
+  palette.lightblue,
+  palette.lightskyblue,
+  palette.skyblue,
+  palette.deepskyblue,
+  palette.lightsteelblue,
+  palette.dodgerblue,
+  palette.cornflowerblue,
+  palette.steelblue,
+  palette.royalblue,
+  palette.blue,
+  palette.mediumblue,
+  palette.darkblue,
+  palette.navy,
+  palette.midnightblue,
+  palette.mediumslateblue,
+  palette.slateblue,
+  palette.darkslateblue
+];
+
 export const colorsMap = labels => {
   labels.sort().push("Other");
   const mapping = labels.reduce((map, label, index) => {

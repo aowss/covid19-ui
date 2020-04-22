@@ -74,6 +74,17 @@ export const mergeAllStats = stats => {
   return result;
 };
 
+/**
+ * Returns the latest stats for a given property
+ * @param {Object} stats - The statistics object. Each key is a location and each value is an array of statistic objects.
+ * @param {String} property - the statistic, e.g 'confirmedCases`, 'deaths` or 'recoveries'
+ * @returns {Object} - The latest statistics for that property. The key is the location and the value is the latest value of that property
+ */
+export const latest = (stats, property) =>
+  Object.fromEntries(
+    Object.entries(stats).map(([key, value]) => [key, value[value.length - 1].value[property]])
+  );
+
 export const topStat = (stats, property, count, day) => {
   const locations = Object.keys(stats);
   const dates =

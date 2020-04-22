@@ -1,7 +1,7 @@
 "use strict";
 /* eslint-env jest */
 
-import { mergeAllStats, topStat, removeLeadingDates } from "@/utils/dataWrangler";
+import { mergeAllStats, topStat, removeLeadingDates, latest } from "@/utils/dataWrangler";
 
 describe("data wrangler", () => {
 
@@ -316,6 +316,12 @@ describe("data wrangler", () => {
     ]
   };
 
+  const latestDeaths = {
+    "Country-1": 8,
+    "Country-2": 6,
+    "Country-3": 7,
+  };
+
   test("merge all stats", () => {
     const result = mergeAllStats(countryBreakdown);
     expect(result).toEqual(aggregate);
@@ -338,6 +344,11 @@ describe("data wrangler", () => {
       expect(locationStats.length).toEqual(4);
       expect(locationStats[0].date).toEqual("2020-01-22");
     });
+  });
+
+  test("latest deaths", () => {
+    const deaths = latest(countryBreakdown, "deaths");
+    expect(deaths).toEqual(latestDeaths);
   });
 
 });
