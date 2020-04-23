@@ -5,6 +5,7 @@
 <script>
 import { GChart } from "vue-google-charts";
 import { heatMapColorsBlue } from "@/utils/colors";
+import { code } from "@/utils/countries";
 
 export default {
   name: "GeoChart",
@@ -38,7 +39,7 @@ export default {
       };
     },
     chartData() {
-      var chartData = Object.entries(this.stats);
+      var chartData = Object.entries(this.stats).map(([key, value]) => [({f: key, v: code(key)}), value]);
       chartData.unshift(["Country", "Figure"]);
       return chartData;
     }
