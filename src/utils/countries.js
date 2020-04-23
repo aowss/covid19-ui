@@ -3238,4 +3238,32 @@ export const countries = [
   }
 ];
 
-export const region = countryName => countries.filter(country => country.name === countryName).map(country => country.region)[0];
+export const map = {
+  Venezuela: "Venezuela (Bolivarian Republic of)",
+  Vietnam: "Viet Nam",
+  Iran: "Iran (Islamic Republic of)",
+  Bolivia: "Bolivia (Plurinational State of)",
+  Syria: "Syrian Arab Republic",
+  Laos: "Lao People's Democratic Republic",
+  Moldova: "Moldova, Republic of",
+  "United Kingdom": "United Kingdom of Great Britain and Northern Ireland",
+  Russia: "Russian Federation",
+  Tanzania: "Tanzania, United Republic of",
+  Brunei: "Brunei Darussalam",
+  "Ivory Coast": "Côte d'Ivoire",
+  Palestine: "Palestine, State of",
+  Taiwan: "Taiwan, Province of China",
+  "South Korea": "Korea, Republic of",
+  "Democratic Republic of the Congo": "Congo, Democratic Republic of the",
+  "Republic of the Congo": "Congo"
+};
+
+export const region = countryName => {
+  const region = countries.filter(country => country.name === countryName || country.name === map[countryName]).map(country => country.region);
+  if (!region[0]) {
+    console.log(countryName + " not found");
+  }
+  return region[0];
+};
+
+export const code = countryName => countries.filter(country => country.name === countryName || country.name === map[countryName]).map(country => country["alpha-2"])[0];
