@@ -23,6 +23,13 @@
         </div>
       </div>
 
+      <div>
+        <h3>Raw Data</h3>
+        <div>
+          <data-table :stats="selectedContinentStats" />
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -30,13 +37,14 @@
 
 <script>
 import GeoChart from "@/components/GeoChart.vue";
+import DataTable from "@/components/DataTable.vue";
 import { latest } from "@/utils/dataWrangler";
 import { region } from "@/utils/countries";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Continents",
-  components: { GeoChart },
+  components: { GeoChart, DataTable },
   props: {
     continentName: {
       type: String,
@@ -65,7 +73,7 @@ export default {
       return latest(this.selectedContinentStats, "deaths");
     },
     latestConfirmed() {
-      return  latest(this.selectedContinentStats, "confirmedCases");
+      return latest(this.selectedContinentStats, "confirmedCases");
     }
   }
 };

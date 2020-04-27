@@ -45,7 +45,7 @@
 
 <script>
 import { BTable } from "bootstrap-vue";
-import { details } from "@/utils/tableMapper";
+import { deltas } from "@/utils/tableMapper";
 import { dateBeautify, previousDay } from "@/utils/dateFormatter";
 
 export default {
@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     items() {
-      return details(this.stats);
+      return deltas(this.stats);
     },
     fields() {
       const fields = [

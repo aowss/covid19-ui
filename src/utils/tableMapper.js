@@ -1,6 +1,6 @@
-export const details = stats => Object.entries(stats).map(([key, value]) => locationDetails(key, value));
+export const deltas = stats => Object.entries(stats).map(([key, value]) => locationDeltas(key, value));
 
-export const locationDetails = (location, locationStats) => {
+export const locationDeltas = (location, locationStats) => {
 
   const result = {
     location: location,
@@ -12,7 +12,8 @@ export const locationDetails = (location, locationStats) => {
     }
   };
 
-  for (var i = 1; i <= 7; i++) {
+  //  7 days max and less if there are less than 7 days in the stats
+  for (var i = 1; ( i <= 7 ) && ( i <= locationStats.length - 1 ); i++) {
 
     var dayStat = locationStats[locationStats.length - i];
     var previousStat = locationStats[locationStats.length - i - 1];
