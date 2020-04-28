@@ -3259,11 +3259,13 @@ export const map = {
 };
 
 export const region = countryName => {
-  const region = countries.filter(country => country.name === countryName || country.name === map[countryName]).map(country => country.region);
-  if (!region[0]) {
-    console.log(countryName + " not found");
-  }
+  const region = countries
+      .filter(country => country.name === countryName || country.name === map[countryName])
+      .map(country => country.region);
+  if (!region[0]) console.log(countryName + " not found");
   return region[0];
 };
 
-export const code = countryName => countries.filter(country => country.name === countryName || country.name === map[countryName]).map(country => country["alpha-2"])[0];
+export const code = countryName => countries
+    .filter(country => country.name === countryName || country.name === map[countryName])
+    .map(country => country["alpha-2"])[0];

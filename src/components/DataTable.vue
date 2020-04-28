@@ -1,5 +1,6 @@
 <template>
   <div class="data-table">
+
     <b-col lg="6" class="my-1">
       <b-form-group label="Filter" label-cols-sm="1" label-align-sm="right" label-size="sm" label-for="filterInput" class="mb-0">
         <b-input-group size="sm">
@@ -10,7 +11,9 @@
         </b-input-group>
       </b-form-group>
     </b-col>
-    <br>
+
+    <br />
+
     <table width="100%">
       <tr>
         <td><span style="background-color:white; color:black">Color Key</span></td>
@@ -21,11 +24,14 @@
         <td class="table-dark"><span style="color:red">significantly higher than the previous day</span></td>
       </tr>
     </table>
-    <br>
+
+    <br />
+
     <b-table dark bordered small striped hover
              :items="items" :fields="fields"
              :filter="filter" :filterIncludedFields="filterOn"
              :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="firstDirectioon" :no-sort-reset="blockSortReset">
+
       <template v-slot:thead-top="tableData">
         <b-tr>
           <b-th colspan="1"><span class="sr-only">Country</span></b-th>
@@ -33,19 +39,31 @@
           <b-th colspan="6">Deaths</b-th>
         </b-tr>
       </template>
+
+      <!-- adding the continent as a first column ( a.k.a virtual column ) -->
+      <template v-slot:cell(continent)="data">
+        <a :href="`#/continent/${targetContinent(data.item.location)}`">{{ targetContinent(data.item.location) }}</a>
+      </template>
+
+      <!-- location formatting : add a URL -->
       <template v-slot:cell(location)="data">
         <a :href="`#/country/${data.value}`">{{ data.value }}</a>
       </template>
+
+      <!-- other columns formatting : add colors to daily values -->
       <template v-slot:cell()="data">
         <span v-bind:style="style(data)">{{ data.value }}</span>
       </template>
+
     </b-table>
+
   </div>
 </template>
 
 <script>
 import { BTable } from "bootstrap-vue";
 import { deltas } from "@/utils/tableMapper";
+import { region } from "@/utils/countries";
 import { dateBeautify, previousDay } from "@/utils/dateFormatter";
 
 export default {
@@ -66,6 +84,7 @@ export default {
     filterOn: ['location']
   }),
   methods: {
+    targetContinent: country => region(country),
     style: data => {
       if (data.field.key.endsWith(".value")) {
         var [type, date] = data.field.key.split(".");
@@ -88,6 +107,13 @@ export default {
     },
     fields() {
       const fields = [
+        {
+          key: "continent",
+          label: "Continent",
+          sortable: true,
+          stickyColumn: true,
+          class: "text-left"
+        },
         {
           key: "location",
           label: "Country",

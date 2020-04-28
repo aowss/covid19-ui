@@ -39,6 +39,7 @@ const routes = [
   {
     path: "/continent/:continentName",
     name: "Continents",
+    props: true,
     component: Continents,
     meta: {
       title: 'Covid-19 Continents View',
