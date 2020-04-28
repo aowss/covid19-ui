@@ -110,8 +110,6 @@ export default {
         {
           key: "continent",
           label: "Continent",
-          sortable: true,
-          stickyColumn: true,
           class: "text-left"
         },
         {

@@ -11,40 +11,21 @@
     <br/>
 
     <div v-if="continent != ''">
-
-      <div class="row">
-        <div class="column">
-          <label>Deaths in {{continent}}</label>
-          <geo-chart :stats="latestDeaths" :regionName="continent"/>
-        </div>
-        <div class="column">
-          <label>Confirmed Cases in {{continent}}</label>
-          <geo-chart :stats="latestConfirmed" :regionName="continent"/>
-        </div>
-      </div>
-
-      <div>
-        <h3>Raw Data</h3>
-        <div>
-          <data-table :stats="selectedContinentStats" />
-        </div>
-      </div>
-
+      <overview :stats="selectedContinentStats" :region="continent"/>
     </div>
 
   </div>
 </template>
 
 <script>
-import GeoChart from "@/components/GeoChart.vue";
-import DataTable from "@/components/DataTable.vue";
-import { latest } from "@/utils/dataWrangler";
 import { region } from "@/utils/countries";
+import Overview from "../components/Overview";
+
 import { mapGetters } from "vuex";
 
 export default {
   name: "Continents",
-  components: { GeoChart, DataTable },
+  components: { Overview },
   props: {
     continentName: {
       type: String,
@@ -68,26 +49,7 @@ export default {
     selectedContinentStats() {
       // eslint-disable-next-line no-unused-vars
       return Object.fromEntries(Object.entries(this.allStats).filter(([key, value]) => region(key) === this.continent));
-    },
-    latestDeaths() {
-      return latest(this.selectedContinentStats, "deaths");
-    },
-    latestConfirmed() {
-      return latest(this.selectedContinentStats, "confirmedCases");
     }
   }
 };
 </script>
-
-<style scoped>
-.column {
-  flex: 45%;
-  /*padding: 0 1px;*/
-  /*border: 1px solid blue;*/
-}
-
-.row {
-  display: flex;
-}
-</style>
-
