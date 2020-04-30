@@ -1,9 +1,8 @@
 <template>
   <div>
 
-    <p>Statistics for the following period : {{period}}</p>
-
     <div class="row">
+      <b-alert class="col-sm" show >Period: {{period}}</b-alert>
       <b-alert class="col-sm" show variant="danger">Deaths {{totalDeaths}}</b-alert>
       <b-alert class="col-sm" show variant="success">Recovered : {{totalRecovered}}</b-alert>
       <b-alert class="col-sm" show variant="warning">Infected: {{totalInfected}}</b-alert>

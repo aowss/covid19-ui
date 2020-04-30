@@ -3,9 +3,7 @@
 
     <label>Continents : </label>
     <select v-model="continent" @change="onChange($event)">
-      <option v-for="continent in continents" v-bind:key="continent">
-        {{ continent }}
-      </option>
+      <option v-for="continent in continents" v-bind:key="continent">{{ continent }}</option>
     </select>
 
     <br/>

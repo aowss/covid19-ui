@@ -3,9 +3,7 @@
 
     <label>Country : </label>
     <select v-model="country" @change="onChange($event)">
-      <option v-for="country in allCountries" v-bind:key="country">
-        {{ country }}
-      </option>
+      <option v-for="country in allCountries" v-bind:key="country">{{ country }}</option>
     </select>
 
     <br />
