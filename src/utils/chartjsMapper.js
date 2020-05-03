@@ -1,3 +1,5 @@
+/** @module chartjsMapper */
+
 import { toDaily, topStat } from "@/utils/dataWrangler";
 import { colorsMap } from "@/utils/colors";
 
@@ -56,35 +58,15 @@ export const dailyLocationData = locationStats => {
 
 /**
  * Transform data indexed by date to Chartjs pie chart data
- * @param data {{
-  "2020-01-22": [
-    {
-      "location": "Country / Region-3",
-      "value": 7
-    },
-    {
-      "location": "Other",
-      "value": 8
-    }
-  ]
-}}
- * @param colors an object that maps the location & 'Other' to a color
- * @returns {{
-  "2020-01-22": {
-    "labels": [ "Country / Region-3", "Other" ],
-    "datasets": [
-      {
-        "data": [7, 8],
-        "backgroundColor": [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)"
-        ]
-      }
-    ]
-  }
-}}
+ * @example <caption>Input</caption>
+ * { "2020-01-22": [ { "location": "Country / Region-3", "value": 7 }, { "location": "Other", "value": 8 } ] }
+ * @example  <caption>Output</caption>
+ * { "2020-01-22": { "labels": [ "Country / Region-3", "Other" ], "datasets": [ { "data": [7, 8], "backgroundColor": [ "rgb(255, 99, 132)", "rgb(54, 162, 235)" ] } ] } }
+ * @param {Object} data - statistics indexed by date
+ * @param {Object} colors - an object that maps the location & 'Other' to a color
+ * @returns {Object} the data formatted for a Chartjs pie chard
  */
-export const buildPieChartData = (data, colors) => {
+const buildPieChartData = (data, colors) => {
   return Object.keys(data).reduce((chartjsData, date) => {
     var labels = data[date].map(stat => stat.location);
     var values = data[date].map(stat => stat.value);
@@ -128,3 +110,7 @@ const buildChartData = (dates, confirmedStats, deathsStats, recoveredStats) => (
     }
   ]
 });
+
+export {
+  buildPieChartData
+};

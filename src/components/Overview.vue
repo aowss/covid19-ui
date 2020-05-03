@@ -38,10 +38,16 @@
     <div>
       <h3>Most Affected</h3>
       <div class="chart">
-        <pie-chart :chart-data="deathsPieChartData" :title="'Deaths'"/>
+        <pie-chart :chart-data="deathsPieChartData" :title="'Deaths Today'"/>
       </div>
       <div class="chart">
-        <pie-chart :chart-data="confirmedPieChartData" :title="'Confirmed Cases'"/>
+        <pie-chart :chart-data="confirmedPieChartData" :title="'Confirmed Cases Today'"/>
+      </div>
+      <div class="chart">
+        <line-chart :chart-data="currentTopDeaths" :title="'Deaths over Time'"/>
+      </div>
+      <div class="chart">
+        <line-chart :chart-data="currentTopConfirmedCases" :title="'Confirmed Cases over Time'"/>
       </div>
     </div>
 
@@ -59,18 +65,19 @@
 
 <script>
 import BarChart from "@/components/BarChart";
+import LineChart from "@/components/LineChart";
 import PieChart from "@/components/PieChart";
 import GeoChart from "@/components/GeoChart.vue";
 import DataTable from "@/components/DataTable.vue";
 
-import { mergeAllStats, topStat, latest } from "@/utils/dataWrangler";
+import { mergeAllStats, topStat, currentTopStat, latest } from "@/utils/dataWrangler";
 import { dateToDay, yesterday, dateBeautify } from "@/utils/dateFormatter";
 import { colorsMap } from "@/utils/colors";
 import { cumulativeLocationData, dailyLocationData, buildPieChartData } from "@/utils/chartjsMapper";
 
 export default {
   name: "Overview",
-  components: { DataTable, BarChart, PieChart, GeoChart },
+  components: { DataTable, BarChart, LineChart, PieChart, GeoChart },
   props: {
     stats: {
       type: Object,
@@ -112,6 +119,13 @@ export default {
     },
     aggregatedDailyChartData() {
       return dailyLocationData(this.aggregatedStats);
+    },
+    currentTopConfirmedCases() {
+      var topConfirmedCountries = Object.values(this.latestTopConfirmedCases)[0].map(entry => entry.location);
+      return currentTopStat(this.stats, "confirmedCases", 5, dateToDay(yesterday()));
+    },
+    currentTopDeaths() {
+      return currentTopStat(this.stats, "deaths", 5, dateToDay(yesterday()));
     },
     latestTopConfirmedCases() {
       return topStat(this.stats, "confirmedCases", 5, dateToDay(yesterday()));

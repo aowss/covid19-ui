@@ -7,6 +7,11 @@ The [heatmap colors](./src/utils/colors.js) were sourced at https://www.rapidtab
 The [grouping of countries in regions](src/utils/countries.js) were sourced at https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes.  
 
 ## Project setup
+
+The project uses [yarn](https://yarnpkg.com/), so the prerequisites are :
+* [Node.js](https://nodejs.org/en/)
+* [yarn](https://yarnpkg.com/)
+
 ```
 yarn install
 ```
@@ -29,6 +34,11 @@ yarn test:unit
 ### Lints and fixes files
 ```
 yarn lint
+```
+
+### Generate JSDoc
+```
+yarn docs
 ```
 
 ### Customize configuration

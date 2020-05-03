@@ -1,3 +1,5 @@
+/** @module dataWrangler */
+
 //  Assumption : same dates in both and ordered
 const mergeStats = (first, second) => {
   for (var i = 0; i < first.length; i++) {
@@ -11,25 +13,20 @@ const mergeStats = (first, second) => {
 /**
  * This predicate is used to decide if a statistic can be removed or not.
  *
- * @callback statisticPredicate
- * @param {Object} statistic - The statistic for a given day
- * @param {string} statistic.date - The statistic's date in 'YYYY-MM-dd' format.
- * @param {Object} statistic.value - The statistic's value.
- * @param {number} statistic.value.confirmedCases - The number of confirmed cases.
- * @param {number} statistic.value.deaths - The number of deaths.
- * @param {number} statistic.value.recoveries - The number of recoveries.
- * @param {boolean} remove - Flag saying if the statistic should be removed or not based on the passed condition
+ * @callback module:dataWrangler.statisticPredicate
+ * @param {module:store.statistic} statistic - the statistic for a given day
+ * @return {boolean} flag saying if the statistic should be removed or not based
  */
 
 /**
  * Removes the leading dates where the statistics meet the passed condition.
  * For a date to be removed, the statistics for that date need to meet the passed condition for all locations.
  *
- * @param {Object} stats - The statistics object. Each key is a location and each value is  an array of statistic objects.
- * @param {statisticPredicate} condition - The predicate function
- * @return {Object} - The statistics object without the removed dates.
+ * @param {module:store.statistics} stats - the statistics
+ * @param {module:dataWrangler.statisticPredicate} condition - the predicate function
+ * @return {module:store.statistics} the statistics object without the removed dates
  */
-export const removeLeadingDates = (stats, condition) => {
+const removeLeadingDates = (stats, condition) => {
   const clone = JSON.parse(JSON.stringify(stats));
   const allStats = Object.values(clone);
   while(allStats[0].length != 0) {
@@ -45,11 +42,15 @@ export const removeLeadingDates = (stats, condition) => {
 
 /**
  * Aggregates the statistics across locations.
- * Assumption : same dates in all locations and same order.
- * @param {Object} stats - The statistics object. Each key is a location and each value is an array of statistic objects.
- * @returns {Object[]} - An array of aggregated statistics. Each object is the aggregation for a given date.
+ * <p>Assumption : same dates in all locations and same order.
+ * @example <caption>Input</caption>
+ * { "Country-1": [ { date: "2020-01-22", value: { confirmedCases: 5, deaths: 1, recoveries: 0 } }, { date: "2020-01-23", value: { confirmedCases: 15, deaths: 4, recoveries: 0 } } ], "Country-2": [ { date: "2020-01-22", value: { confirmedCases: 3, deaths: 2, recoveries: 0 } }, { date: "2020-01-23", value: { confirmedCases: 6, deaths: 4, recoveries: 0 } } ] }
+ * @example  <caption>Output</caption>
+ * [ { date: "2020-01-22", value: { confirmedCases: 8, deaths: 3, recoveries: 0 } }, { date: "2020-01-23", value: { confirmedCases: 21, deaths: 8, recoveries: 0 } } ]
+ * @param {module:store.statistics} stats - the statistics
+ * @returns {module:store.locationStatistics} the aggregated statistics across locations
  */
-export const mergeAllStats = stats => {
+const mergeAllStats = stats => {
   const allStats = Object.values(stats);
   const result = [];
   for (var i = 0; i < allStats[0].length; i++) {
@@ -75,12 +76,21 @@ export const mergeAllStats = stats => {
 };
 
 /**
- * Returns the latest stats for a given property
- * @param {Object} stats - The statistics object. Each key is a location and each value is an array of statistic objects.
- * @param {String} property - the statistic, e.g 'confirmedCases`, 'deaths` or 'recoveries'
- * @returns {Object} - The latest statistics for that property. The key is the location and the value is the latest value of that property
+ * The values of a given statistic for a set of locations.
+ * @example { "Country-1": 8, "Country-2": 6, "Country-3": 7 }
+ * @typedef module:dataWrangler.snapshot
+ * @type {object}
+ * @property {number} * - the key is the location; this can be a country, e.g. `France`, or a region, e.g. `France / Martinique`
+ *                      <p> the value of a specific statistic at a specific date for that given location
  */
-export const latest = (stats, property) =>
+
+/**
+ * Returns the latest statistics for a given property
+ * @param {module:store.statistics} stats - the statistics
+ * @param {String} property - the statistic, e.g 'confirmedCases`, 'deaths` or 'recoveries'
+ * @returns {module:dataWrangler.snapshot} the latest statistics for that property.
+ */
+const latest = (stats, property) =>
   Object.fromEntries(
     Object.entries(stats).map(([key, value]) => [key, value[value.length - 1].value[property]])
   );
@@ -119,6 +129,41 @@ export const topStat = (stats, property, count, day) => {
   return topStats;
 };
 
+export const currentTopStat = (stats, property, count, day) => {
+  const locations = Object.keys(stats);
+  const dates =
+      day !== undefined ? [day] : stats[locations[0]].map(entry => entry.date);
+  const data = dates.reduce((data, date) => {
+    data[date] = locations
+        .flatMap(location => stats[location])
+        .filter(stat => stat.date === date)
+        .map(stat => stat.value[property])
+        .map((value, index) => ({
+          location: locations[index],
+          value: value
+        }));
+    return data;
+  }, {});
+
+  // eslint-disable-next-line no-unused-vars
+  var topOrdered = Object.entries(latest(stats, property)).sort(([c1,v1], [c2,v2]) => v2 - v1).map(([key,value]) => key).slice(0, count);
+
+  var topStats = dates.reduce((topData, date) => {
+    const top = data[date].filter(stats => topOrdered.includes(stats.location));
+    const sum = data[date]
+        .filter(stats => !topOrdered.includes(stats.location))
+        .reduce((total, stat) => total + stat.value, 0);
+    top.push({
+      location: "Other",
+      value: sum
+    });
+    topData[date] = top;
+    return topData;
+  }, {});
+
+  return topStats;
+};
+
 export const groupByCountry = response => {
   var result = {};
   Object.keys(response).forEach(key => {
@@ -141,3 +186,9 @@ export const toDaily = response =>
   response.map((item, index, array) =>
     index == 0 ? item : item - array[index - 1]
   );
+
+export {
+  removeLeadingDates,
+  mergeAllStats,
+  latest
+};

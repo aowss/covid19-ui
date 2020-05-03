@@ -14,6 +14,14 @@ export default {
       default: ""
     }
   },
+  computed: {
+    configuredData() {
+      this.chartData.datasets.forEach(entry => {
+        entry.fill = false;
+      });
+      return this.chartData;
+    }
+  },
   mounted() {
     var options = {
       title: {
@@ -44,6 +52,6 @@ export default {
         }
       }
     };
-    this.renderChart(this.chartData, options);
+    this.renderChart(this.configuredData, options);
   }
 };

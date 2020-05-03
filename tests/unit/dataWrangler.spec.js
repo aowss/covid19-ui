@@ -1,7 +1,7 @@
 "use strict";
 /* eslint-env jest */
 
-import { mergeAllStats, topStat, removeLeadingDates, latest } from "@/utils/dataWrangler";
+import { mergeAllStats, topStat, currentTopStat, removeLeadingDates, latest } from "@/utils/dataWrangler";
 
 describe("data wrangler", () => {
 
@@ -159,6 +159,56 @@ describe("data wrangler", () => {
       {
         location: "Other",
         value: 6
+      }
+    ]
+  };
+
+  const currentTopConfirmed = {
+    "2020-01-22": [
+      {
+        location: "Country-1",
+        value: 5
+      },
+      {
+        location: "Other",
+        value: 10
+      }
+    ],
+    "2020-01-23": [
+      {
+        location: "Country-1",
+        value: 15
+      },
+      {
+        location: "Other",
+        value: 15
+      }
+    ],
+    "2020-01-24": [
+      {
+        location: "Country-1",
+        value: 30
+      },
+      {
+        location: "Other",
+        value: 20
+      }
+    ]
+  };
+
+  const currentTopDeaths = {
+    "2020-01-23": [
+      {
+        location: "Country-1",
+        value: 4
+      },
+      {
+        location: "Country-3",
+        value: 5
+      },
+      {
+        location: "Other",
+        value: 4
       }
     ]
   };
@@ -335,6 +385,16 @@ describe("data wrangler", () => {
   test("top 2 deaths cases on 2020-01-24", () => {
     const deaths = topStat(countryBreakdown, "deaths", 2, "2020-01-24");
     expect(deaths).toEqual(topDeaths);
+  });
+
+  test("current top confirmed cases", () => {
+    const confirmed = currentTopStat(countryBreakdown, "confirmedCases", 1);
+    expect(confirmed).toEqual(currentTopConfirmed);
+  });
+
+  test("current top 2 deaths cases on 2020-01-23", () => {
+    const deaths = currentTopStat(countryBreakdown, "deaths", 2, "2020-01-23");
+    expect(deaths).toEqual(currentTopDeaths);
   });
 
   test("remove leading useless dates", () => {
