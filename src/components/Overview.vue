@@ -41,13 +41,13 @@
         <pie-chart :chart-data="deathsPieChartData" :title="'Deaths Today'"/>
       </div>
       <div class="chart">
+        <line-chart :chart-data="deathsLineChartData" :title="'Deaths over Time'"/>
+      </div>
+      <div class="chart">
         <pie-chart :chart-data="confirmedPieChartData" :title="'Confirmed Cases Today'"/>
       </div>
       <div class="chart">
-        <line-chart :chart-data="currentTopDeaths" :title="'Deaths over Time'"/>
-      </div>
-      <div class="chart">
-        <line-chart :chart-data="currentTopConfirmedCases" :title="'Confirmed Cases over Time'"/>
+        <line-chart :chart-data="confirmedLineChartData" :title="'Confirmed Cases over Time'"/>
       </div>
     </div>
 
@@ -73,7 +73,7 @@ import DataTable from "@/components/DataTable.vue";
 import { mergeAllStats, topStat, currentTopStat, latest } from "@/utils/dataWrangler";
 import { dateToDay, yesterday, dateBeautify } from "@/utils/dateFormatter";
 import { colorsMap } from "@/utils/colors";
-import { cumulativeLocationData, dailyLocationData, buildPieChartData } from "@/utils/chartjsMapper";
+import { cumulativeLocationData, dailyLocationData, buildPieChartData, buildLineChartData } from "@/utils/chartjsMapper";
 
 export default {
   name: "Overview",
@@ -121,11 +121,10 @@ export default {
       return dailyLocationData(this.aggregatedStats);
     },
     currentTopConfirmedCases() {
-      var topConfirmedCountries = Object.values(this.latestTopConfirmedCases)[0].map(entry => entry.location);
-      return currentTopStat(this.stats, "confirmedCases", 5, dateToDay(yesterday()));
+      return currentTopStat(this.stats, "confirmedCases", 5);
     },
     currentTopDeaths() {
-      return currentTopStat(this.stats, "deaths", 5, dateToDay(yesterday()));
+      return currentTopStat(this.stats, "deaths", 5);
     },
     latestTopConfirmedCases() {
       return topStat(this.stats, "confirmedCases", 5, dateToDay(yesterday()));
@@ -145,6 +144,12 @@ export default {
     },
     confirmedPieChartData() {
       return buildPieChartData(this.latestTopConfirmedCases, this.topColors)[dateToDay(yesterday())];
+    },
+    deathsLineChartData() {
+      return buildLineChartData(this.currentTopDeaths, this.topColors);
+    },
+    confirmedLineChartData() {
+      return buildLineChartData(this.currentTopConfirmedCases, this.topColors);
     }
   }
 };

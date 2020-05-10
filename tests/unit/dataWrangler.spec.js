@@ -1,7 +1,7 @@
 "use strict";
 /* eslint-env jest */
 
-import { mergeAllStats, topStat, currentTopStat, removeLeadingDates, latest } from "@/utils/dataWrangler";
+import { mergeAllStats, topStat, currentTopStat, removeLeadingDates, latest, indexByDate } from "@/utils/dataWrangler";
 
 describe("data wrangler", () => {
 
@@ -77,6 +77,87 @@ describe("data wrangler", () => {
       },
       {
         date: "2020-01-24",
+        value: {
+          confirmedCases: 11,
+          deaths: 7,
+          recoveries: 0
+        }
+      }
+    ]
+  };
+
+  const dateBreakdown = {
+    "2020-01-22": [
+      {
+        location: "Country-1",
+        value: {
+          confirmedCases: 5,
+          deaths: 1,
+          recoveries: 0
+        }
+      },
+      {
+        location: "Country-2",
+        value: {
+          confirmedCases: 3,
+          deaths: 2,
+          recoveries: 0
+        }
+      },
+      {
+        location: "Country-3",
+        value: {
+          confirmedCases: 7,
+          deaths: 1,
+          recoveries: 0
+        }
+      }
+    ],
+    "2020-01-23": [
+      {
+        location: "Country-1",
+        value: {
+          confirmedCases: 15,
+          deaths: 4,
+          recoveries: 0
+        }
+      },
+      {
+        location: "Country-2",
+        value: {
+          confirmedCases: 6,
+          deaths: 4,
+          recoveries: 0
+        }
+      },
+      {
+        location: "Country-3",
+        value: {
+          confirmedCases: 9,
+          deaths: 5,
+          recoveries: 1
+        }
+      }
+    ],
+    "2020-01-24": [
+      {
+        location: "Country-1",
+        value: {
+          confirmedCases: 30,
+          deaths: 8,
+          recoveries: 0
+        }
+      },
+      {
+        location: "Country-2",
+        value: {
+          confirmedCases: 9,
+          deaths: 6,
+          recoveries: 0
+        }
+      },
+      {
+        location: "Country-3",
         value: {
           confirmedCases: 11,
           deaths: 7,
@@ -409,6 +490,11 @@ describe("data wrangler", () => {
   test("latest deaths", () => {
     const deaths = latest(countryBreakdown, "deaths");
     expect(deaths).toEqual(latestDeaths);
+  });
+
+  it("index by date, not country", () => {
+    const result = indexByDate(countryBreakdown);
+    expect(result).toEqual(dateBreakdown);
   });
 
 });

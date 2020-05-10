@@ -35,6 +35,9 @@ export default {
         display: true,
         text: this.title
       },
+      legend: {
+        position: "top",
+      },
       scales: {
         xAxes: [
           {

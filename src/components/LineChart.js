@@ -14,19 +14,20 @@ export default {
       default: ""
     }
   },
-  computed: {
-    configuredData() {
-      this.chartData.datasets.forEach(entry => {
-        entry.fill = false;
-      });
-      return this.chartData;
-    }
-  },
   mounted() {
     var options = {
       title: {
         display: true,
         text: this.title
+      },
+      legend: {
+        position: "top",
+      },
+      elements: {
+        point: {
+          pointStyle: "circle",
+          pointRadius: 0
+        }
       },
       scales: {
         xAxes: [
@@ -45,13 +46,13 @@ export default {
       },
       layout: {
         padding: {
-          left: 50,
-          right: 50,
-          top: 50,
-          bottom: 50
+          left: 100,
+          right: 100,
+          top: 100,
+          bottom: 100
         }
       }
     };
-    this.renderChart(this.configuredData, options);
+    this.renderChart(this.chartData, options);
   }
 };

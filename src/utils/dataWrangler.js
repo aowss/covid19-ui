@@ -11,11 +11,39 @@ const mergeStats = (first, second) => {
 };
 
 /**
+ * Indexes the statistics by date.
+ * <p>Assumption : same dates in all locations and same order.
+ * @example <caption>Input</caption>
+ * { "Country-1": [ { date: "2020-01-22", value: { confirmedCases: 5, deaths: 1, recoveries: 0 } }, { date: "2020-01-23", value: { confirmedCases: 15, deaths: 4, recoveries: 0 } } ], "Country-2": [ { date: "2020-01-22", value: { confirmedCases: 3, deaths: 2, recoveries: 0 } }, { date: "2020-01-23", value: { confirmedCases: 6, deaths: 4, recoveries: 0 } } ] }
+ * @example  <caption>Output</caption>
+ * { "2020-01-22": [ { location: "Country-1", value: { confirmedCases: 5, deaths: 1, recoveries: 0 } }, { location:  "Country-2", value: { confirmedCases: 3, deaths: 2, recoveries: 0 } }, { location: "Country-3", value: { confirmedCases: 7, deaths: 1, recoveries: 0 } } ], "2020-01-23":  [ { location: "Country-1", value: { confirmedCases: 15, deaths: 4, recoveries: 0 } }, { location: "Country-2", value: { confirmedCases: 6, deaths: 4, recoveries: 0 } }, { location: "Country-3", value: { confirmedCases: 9, deaths: 5, recoveries: 1 } } ], "2020-01-24":  [ { location: "Country-1", value: { confirmedCases: 30, deaths: 8, recoveries: 0 } }, { location: "Country-2", value: { confirmedCases: 9, deaths: 6, recoveries: 0 } }, { location: "Country-3", value: { confirmedCases: 11, deaths: 7, recoveries: 0 } } ] }
+ * @param {module:store.statistics} stats - the statistics
+ * @returns {module:store.statisticsByDates} the statistics indexed by date
+ */
+const indexByDate = stats => {
+  console.time("indexByDate");
+  const locations = Object.keys(stats);
+  const dates = stats[locations[0]].map(entry => entry.date);
+  const data = dates.reduce((data, date) => {
+    data[date] = locations
+        .flatMap(location => stats[location])
+        .filter(stat => stat.date === date)
+        .map((stat, index) => ({
+          location: locations[index],
+          value: stat.value
+        }));
+    return data;
+  }, {});
+  console.timeEnd("indexByDate");
+  return data;
+};
+
+/**
  * This predicate is used to decide if a statistic can be removed or not.
  *
  * @callback module:dataWrangler.statisticPredicate
  * @param {module:store.statistic} statistic - the statistic for a given day
- * @return {boolean} flag saying if the statistic should be removed or not based
+ * @return {boolean} flag saying if the statistic should be removed or not
  */
 
 /**
@@ -27,6 +55,7 @@ const mergeStats = (first, second) => {
  * @return {module:store.statistics} the statistics object without the removed dates
  */
 const removeLeadingDates = (stats, condition) => {
+  console.time("removeLeadingDates");
   const clone = JSON.parse(JSON.stringify(stats));
   const allStats = Object.values(clone);
   while(allStats[0].length != 0) {
@@ -37,6 +66,7 @@ const removeLeadingDates = (stats, condition) => {
     }
     allStats.forEach(locationStats => locationStats.shift());
   }
+  console.timeEnd("removeLeadingDates");
   return clone;
 };
 
@@ -51,6 +81,7 @@ const removeLeadingDates = (stats, condition) => {
  * @returns {module:store.locationStatistics} the aggregated statistics across locations
  */
 const mergeAllStats = stats => {
+  console.time("mergeAllStats");
   const allStats = Object.values(stats);
   const result = [];
   for (var i = 0; i < allStats[0].length; i++) {
@@ -72,6 +103,7 @@ const mergeAllStats = stats => {
       }
     });
   }
+  console.timeEnd("mergeAllStats");
   return result;
 };
 
@@ -80,14 +112,18 @@ const mergeAllStats = stats => {
  * @example { "Country-1": 8, "Country-2": 6, "Country-3": 7 }
  * @typedef module:dataWrangler.snapshot
  * @type {object}
- * @property {number} * - the key is the location; this can be a country, e.g. `France`, or a region, e.g. `France / Martinique`
- *                      <p> the value of a specific statistic at a specific date for that given location
+ * @property {number} * - the key is the location; this can be a country, e.g. 'France', or a region, e.g. 'France / Martinique'
+ *                      <p> the value is the value of a specific statistic at a specific date for that given location
  */
 
 /**
- * Returns the latest statistics for a given property
+ * Returns the latest statistics for a given property.
+ * @example <caption>Input</caption>
+ * { "Country-1": [ { date: "2020-01-22", value: { confirmedCases: 5, deaths: 1, recoveries: 0 } }, { date: "2020-01-23", value: { confirmedCases: 15, deaths: 4, recoveries: 0 } } ], "Country-2": [ { date: "2020-01-22", value: { confirmedCases: 3, deaths: 2, recoveries: 0 } }, { date: "2020-01-23", value: { confirmedCases: 6, deaths: 4, recoveries: 0 } } ] }
+ * @example  <caption>Output for 'deaths'</caption>
+ * { "Country-1": 4, "Country-2": 4 }
  * @param {module:store.statistics} stats - the statistics
- * @param {String} property - the statistic, e.g 'confirmedCases`, 'deaths` or 'recoveries'
+ * @param {String} property - the statistic, e.g 'confirmedCases', 'deaths' or 'recoveries'
  * @returns {module:dataWrangler.snapshot} the latest statistics for that property.
  */
 const latest = (stats, property) =>
@@ -96,6 +132,7 @@ const latest = (stats, property) =>
   );
 
 export const topStat = (stats, property, count, day) => {
+  console.time("topStat");
   const locations = Object.keys(stats);
   const dates =
     day !== undefined ? [day] : stats[locations[0]].map(entry => entry.date);
@@ -126,10 +163,12 @@ export const topStat = (stats, property, count, day) => {
     return topData;
   }, {});
 
+  console.timeEnd("topStat");
   return topStats;
 };
 
 export const currentTopStat = (stats, property, count, day) => {
+  console.time("currentTopStat");
   const locations = Object.keys(stats);
   const dates =
       day !== undefined ? [day] : stats[locations[0]].map(entry => entry.date);
@@ -161,6 +200,7 @@ export const currentTopStat = (stats, property, count, day) => {
     return topData;
   }, {});
 
+  console.timeEnd("currentTopStat");
   return topStats;
 };
 
@@ -190,5 +230,6 @@ export const toDaily = response =>
 export {
   removeLeadingDates,
   mergeAllStats,
-  latest
+  latest,
+  indexByDate
 };

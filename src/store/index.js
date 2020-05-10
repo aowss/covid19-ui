@@ -7,5 +7,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
     stats
-  }
+  },
+  strict: process.env.NODE_ENV !== 'production'
 });

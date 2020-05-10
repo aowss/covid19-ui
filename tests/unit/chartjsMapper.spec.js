@@ -1,7 +1,7 @@
 "use strict";
 /* eslint-env jest */
 
-import { cumulativeData, dailyData, cumulativeDataPerDay, topCumulativeDataPerDay } from "@/utils/chartjsMapper";
+import { cumulativeData, dailyData, cumulativeDataPerDay, topCumulativeDataPerDay, buildLineChartData } from "@/utils/chartjsMapper";
 import { colorsMap } from "@/utils/colors";
 import { palette } from "@/utils/colorsPalette";
 
@@ -87,6 +87,15 @@ describe("bar chart", () => {
       }
     ]
   };
+
+  const dateBreakdown = { "2020-01-22": [ { "location": "France", "value": 7 }, { "location": "Other", "value": 8 } ], "2020-01-23": [ { "location": "France", "value": 12 }, { "location": "Other", "value": 18 } ] };
+  const colors = { "France":"#a9a9a9","Italy":"#778899","Other":"#bc8f8f","Spain":"#cd5c5c","United Kingdom":"#dcdcdc","United States of America":"#8b0000" };
+  const lineChart = { "labels": [ "2020-01-22", "2020-01-23" ], "datasets": [ { "label": "France", "backgroundColor": "#a9a9a9", "fill": false, "data": [7, 12] }, { "label": "Other", "backgroundColor": "#bc8f8f", "fill": false, "data": [8, 18] } ] };
+
+  test("from date-indexed stats to line chart", () => {
+    const actual = buildLineChartData(dateBreakdown, colors);
+    expect(actual).toEqual(lineChart);
+  });
 
   test("cumulative data in chartjs format", () => {
 
