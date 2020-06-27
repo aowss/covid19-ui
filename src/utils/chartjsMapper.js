@@ -4,15 +4,19 @@ import { toDaily, topStat } from "@/utils/dataWrangler";
 import { colorsMap } from "@/utils/colors";
 
 export const topCumulativeDataPerDay = (stats, property, count, colors) => {
+  console.time("topCumulativeDataPerDay");
   var topStats = topStat(stats, property, count);
   var backgroundColors = colors != null ? colors : colorsMap(Object.keys(stats));
-  return buildPieChartData(topStats, backgroundColors);
+  var result = buildPieChartData(topStats, backgroundColors);
+  console.timeEnd("topCumulativeDataPerDay");
+  return result;
 };
 
 export const cumulativeDataPerDay = (stats, property) => {
+  console.time("cumulativeDataPerDay");
   const locations = Object.keys(stats);
   const dates = stats[locations[0]].map(entry => entry.date);
-  return dates.reduce((data, date) => {
+  var result = dates.reduce((data, date) => {
     data[date] = {
       labels: locations,
       datasets: [
@@ -26,13 +30,19 @@ export const cumulativeDataPerDay = (stats, property) => {
     };
     return data;
   }, {});
+  console.timeEnd("cumulativeDataPerDay");
+  return result;
 };
 
-export const cumulativeData = stats =>
-  Object.keys(stats).reduce((data, location) => {
+export const cumulativeData = stats => {
+  console.time("cumulativeData");
+  var result = Object.keys(stats).reduce((data, location) => {
     data[location] = cumulativeLocationData(stats[location]);
     return data;
   }, {});
+  console.timeEnd("cumulativeData");
+  return result;
+}
 
 export const dailyData = stats =>
   Object.keys(stats).reduce((data, location) => {

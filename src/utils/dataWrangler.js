@@ -1,4 +1,7 @@
-/** @module dataWrangler */
+/**
+ * This module is responsible for manipulating data.
+ * @module dataWrangler
+ */
 
 //  Assumption : same dates in both and ordered
 const mergeStats = (first, second) => {
@@ -18,24 +21,25 @@ const mergeStats = (first, second) => {
  * @example  <caption>Output</caption>
  * { "2020-01-22": [ { location: "Country-1", value: { confirmedCases: 5, deaths: 1, recoveries: 0 } }, { location:  "Country-2", value: { confirmedCases: 3, deaths: 2, recoveries: 0 } }, { location: "Country-3", value: { confirmedCases: 7, deaths: 1, recoveries: 0 } } ], "2020-01-23":  [ { location: "Country-1", value: { confirmedCases: 15, deaths: 4, recoveries: 0 } }, { location: "Country-2", value: { confirmedCases: 6, deaths: 4, recoveries: 0 } }, { location: "Country-3", value: { confirmedCases: 9, deaths: 5, recoveries: 1 } } ], "2020-01-24":  [ { location: "Country-1", value: { confirmedCases: 30, deaths: 8, recoveries: 0 } }, { location: "Country-2", value: { confirmedCases: 9, deaths: 6, recoveries: 0 } }, { location: "Country-3", value: { confirmedCases: 11, deaths: 7, recoveries: 0 } } ] }
  * @param {module:store.statistics} stats - the statistics
+ * @param mapper - a function that maps from the statistic's value to the desired output, e.g. <pre>value => value.deaths</pre>
  * @returns {module:store.statisticsByDates} the statistics indexed by date
  */
-const indexByDate = stats => {
+const indexByDate = (stats, mapper) => {
+  console.log("indexing " + Object.keys(stats).length + " countries with " + stats[Object.keys(stats)[0]].length + " dates")
+  if (!mapper) mapper = value => value;
   console.time("indexByDate");
-  const locations = Object.keys(stats);
-  const dates = stats[locations[0]].map(entry => entry.date);
-  const data = dates.reduce((data, date) => {
-    data[date] = locations
-        .flatMap(location => stats[location])
-        .filter(stat => stat.date === date)
-        .map((stat, index) => ({
-          location: locations[index],
-          value: stat.value
-        }));
-    return data;
-  }, {});
+  const result = {};
+  for (const country in stats) {
+    for (const stat of stats[country]) {
+      if (!result[stat.date]) result[stat.date] = [];
+      result[stat.date].push({
+        location: country,
+        value : mapper(stat.value)
+      });
+    }
+  }
   console.timeEnd("indexByDate");
-  return data;
+  return result;
 };
 
 /**
@@ -133,23 +137,12 @@ const latest = (stats, property) =>
 
 export const topStat = (stats, property, count, day) => {
   console.time("topStat");
-  const locations = Object.keys(stats);
-  const dates =
-    day !== undefined ? [day] : stats[locations[0]].map(entry => entry.date);
-  const data = dates.reduce((data, date) => {
-    data[date] = locations
-      .flatMap(location => stats[location])
-      .filter(stat => stat.date === date)
-      .map(stat => stat.value[property])
-      .map((value, index) => ({
-        location: locations[index],
-        value: value
-      }));
-    return data;
-  }, {});
+
+  const data = indexByDate(stats, value => value[property]);
 
   Object.values(data).forEach(stats => stats.sort((a, b) => b.value - a.value));
 
+  const dates = day !== undefined ? [day] : Object.keys(data);
   var topStats = dates.reduce((topData, date) => {
     const top = data[date].slice(0, count);
     const sum = data[date]
@@ -169,24 +162,13 @@ export const topStat = (stats, property, count, day) => {
 
 export const currentTopStat = (stats, property, count, day) => {
   console.time("currentTopStat");
-  const locations = Object.keys(stats);
-  const dates =
-      day !== undefined ? [day] : stats[locations[0]].map(entry => entry.date);
-  const data = dates.reduce((data, date) => {
-    data[date] = locations
-        .flatMap(location => stats[location])
-        .filter(stat => stat.date === date)
-        .map(stat => stat.value[property])
-        .map((value, index) => ({
-          location: locations[index],
-          value: value
-        }));
-    return data;
-  }, {});
+
+  const data = indexByDate(stats, value => value[property]);
 
   // eslint-disable-next-line no-unused-vars
   var topOrdered = Object.entries(latest(stats, property)).sort(([c1,v1], [c2,v2]) => v2 - v1).map(([key,value]) => key).slice(0, count);
 
+  const dates = day !== undefined ? [day] : Object.keys(data);
   var topStats = dates.reduce((topData, date) => {
     const top = data[date].filter(stats => topOrdered.includes(stats.location));
     const sum = data[date]
